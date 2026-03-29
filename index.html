@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>F1MOTO — F1 & MotoGP 2026</title>
+    <meta name="description" content="F1 and MotoGP 2026 Season Calendar, Session Times, and Championship Standings">
+    <meta name="theme-color" content="#08080f">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=2">
+</head>
+
+<body>
+    <!-- Landing View -->
+    <div id="landing-view" class="view active">
+        <div class="landing-container">
+            <div class="landing-bg-decoration"></div>
+            <h1 class="app-title">F1<span class="highlight">MOTO</span></h1>
+            <p class="app-subtitle">2026 Season · Calendar & Standings</p>
+            <div class="series-cards">
+                <div class="series-card f1-card" onclick="app.selectSeries('f1', event)" id="f1-select-btn">
+                    <div class="card-glow f1-glow"></div>
+                    <div class="card-content centered-content">
+                        <div class="series-logo">
+                            <img src="resources/f1logo.png" alt="Formula 1" class="logo-img f1-logo-img">
+                        </div>
+                    </div>
+                    <div class="rollout-options">
+                        <div class="rollout-btn" onclick="app.startSeries('f1', 'races', event)">
+                            <span class="btn-icon">🏁</span> RACES
+                        </div>
+                        <div class="rollout-btn" onclick="app.startSeries('f1', 'standings', event)">
+                            <span class="btn-icon">🏆</span> STANDINGS
+                        </div>
+                    </div>
+                </div>
+                <div class="series-card motogp-card" onclick="app.selectSeries('motogp', event)" id="motogp-select-btn">
+                    <div class="card-glow motogp-glow"></div>
+                    <div class="card-content centered-content">
+                        <div class="series-logo">
+                            <img src="resources/motogplogo.png" alt="MotoGP" class="logo-img motogp-logo-img">
+                        </div>
+                    </div>
+                    <div class="rollout-options">
+                        <div class="rollout-btn" onclick="app.startSeries('motogp', 'races', event)">
+                            <span class="btn-icon">🏁</span> RACES
+                        </div>
+                        <div class="rollout-btn" onclick="app.startSeries('motogp', 'standings', event)">
+                            <span class="btn-icon">🏆</span> STANDINGS
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category View removed as requested -->
+
+    <!-- Calendar View -->
+    <div id="calendar-view" class="view">
+        <div class="header">
+            <div class="header-inner">
+                <div class="header-left">
+                    <button class="back-btn" onclick="app.goBack()">
+                        <img src="resources/arrow.png" class="back-icon" alt="Back">
+                    </button>
+                </div>
+                <div class="header-center">
+                    <div id="cal-header-logo"></div>
+                    <h1 id="calendar-title" class="view-title"></h1>
+                </div>
+                <div class="header-right">
+                    <button class="menu-btn" onclick="app.toggleMenu(event)">⋮</button>
+                </div>
+            </div>
+        </div>
+        <div id="race-grid" class="race-grid container"></div>
+    </div>
+
+    <!-- Race Detail View -->
+    <div id="race-detail-view" class="view">
+        <div id="race-detail-content" class="detail-content"></div>
+    </div>
+
+    <!-- Standings View -->
+    <div id="standings-view" class="view">
+        <div class="header">
+            <div class="header-inner">
+                <div class="header-left">
+                    <button class="back-btn" onclick="app.goBack()">
+                        <img src="resources/arrow.png" class="back-icon" alt="Back">
+                    </button>
+                </div>
+                <div class="header-center">
+                    <div id="standings-header-logo"></div>
+                    <h1 id="standings-title" class="view-title"></h1>
+                </div>
+                <div class="header-right">
+                    <button class="menu-btn" onclick="app.toggleMenu(event)">⋮</button>
+                </div>
+            </div>
+        </div>
+        <div id="standings-tabs" class="standings-tabs container"></div>
+        <div id="standings-content" class="standings-content container"></div>
+    </div>
+
+    <!-- View Switcher Menu -->
+    <div id="view-switcher-menu" class="switcher-menu" onclick="event.stopPropagation()">
+        <div class="menu-item" onclick="app.switchFromMenu('races')" id="menu-item-races">
+            <span class="menu-item-icon">🏁</span>
+            <span class="menu-item-text">Races</span>
+        </div>
+        <div class="menu-item" onclick="app.switchFromMenu('standings')" id="menu-item-standings">
+            <span class="menu-item-icon">🏆</span>
+            <span class="menu-item-text">Standings</span>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="results-modal" class="modal" onclick="app.closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="modal-title">Session Results</h2>
+                <button class="close-modal" onclick="app.closeModal()">×</button>
+            </div>
+            <div id="modal-body" class="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Floating Countdown Timer -->
+    <div id="countdown-bar" class="countdown-bar">
+        <div class="countdown-timer f1-timer" id="f1-countdown-timer">
+            <div class="timer-bg-image f1-timer-bg"></div>
+            <div class="timer-overlay"></div>
+            <div class="timer-content">
+                <div class="timer-header-row">
+                    <div class="timer-series-badge f1-badge">
+                        <img src="resources/f1logo.png" alt="F1" class="timer-logo">
+                    </div>
+                    <div class="timer-digits" id="f1-timer-digits">
+                        <div class="digit-block"><span class="digit-value" id="f1-days">--</span><span class="digit-label">Days</span></div>
+                        <div class="digit-block"><span class="digit-value" id="f1-hours">--</span><span class="digit-label">Hours</span></div>
+                        <div class="digit-block"><span class="digit-value" id="f1-mins">--</span><span class="digit-label">Minutes</span></div>
+                        <div class="digit-block"><span class="digit-value" id="f1-secs">--</span><span class="digit-label">Seconds</span></div>
+                    </div>
+                </div>
+                <div class="timer-info-row">
+                    <div class="timer-location">
+                        <span class="timer-location-name" id="f1-location">--</span>
+                        <span class="timer-circuit" id="f1-circuit">--</span>
+                    </div>
+                    <div class="timer-session-pill" id="f1-session-pill">
+                        <span class="session-type" id="f1-session-type">--</span>
+                        <span class="session-date" id="f1-session-date">--</span>
+                        <span class="session-time-val" id="f1-session-time">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="countdown-timer motogp-timer" id="motogp-countdown-timer">
+            <div class="timer-bg-image motogp-timer-bg"></div>
+            <div class="timer-overlay"></div>
+            <div class="timer-content">
+                <div class="timer-header-row">
+                    <div class="timer-series-badge motogp-badge">
+                        <img src="resources/motogplogo.png" alt="MotoGP" class="timer-logo motogp-timer-logo">
+                    </div>
+                    <div class="timer-digits" id="motogp-timer-digits">
+                        <div class="digit-block"><span class="digit-value" id="motogp-days">--</span><span class="digit-label">Days</span></div>
+                        <div class="digit-block"><span class="digit-value" id="motogp-hours">--</span><span class="digit-label">Hours</span></div>
+                        <div class="digit-block"><span class="digit-value" id="motogp-mins">--</span><span class="digit-label">Minutes</span></div>
+                        <div class="digit-block"><span class="digit-value" id="motogp-secs">--</span><span class="digit-label">Seconds</span></div>
+                    </div>
+                </div>
+                <div class="timer-info-row">
+                    <div class="timer-location">
+                        <span class="timer-location-name" id="motogp-location">--</span>
+                        <span class="timer-circuit" id="motogp-circuit">--</span>
+                    </div>
+                    <div class="timer-session-pill" id="motogp-session-pill">
+                        <span class="session-type" id="motogp-session-type">--</span>
+                        <span class="session-date" id="motogp-session-date">--</span>
+                        <span class="session-time-val" id="motogp-session-time">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="countdown-toggle-btn" id="countdown-toggle-btn" onclick="app.toggleCountdownBar()">
+        <span id="toggle-icon">▼</span>
+    </button>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            app.init();
+        });
+    </script>
+</body>
+
+</html>
