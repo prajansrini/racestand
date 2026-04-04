@@ -1,15 +1,15 @@
 // ===== F1 2026 RACE CALENDAR (UTC Source) =====
 // Sprint weekends: China, Miami, Canada, Great Britain, Netherlands, Singapore
 const f1Races = [
-  { round:1, name:'Australian Grand Prix', circuit:'Albert Park Circuit', location:'Melbourne', country:'Australia', flag:'🇦🇺', dateRange:'Mar 6-8', isSprint:false, podium:['RUS', 'ANT', 'LEC'], sessions:[
+  { round:1, name:'Australian Grand Prix', circuit:'Albert Park Circuit', location:'Melbourne', country:'Australia', flag:'🇦🇺', dateRange:'Mar 6-8', isSprint:false, podium:['RUS','ANT','LEC'], sessions:[
     {name:'Free Practice 1',day:'Friday',date:'Mar 6',time:'07:00 AM',utc:'2026-03-06T01:30:00Z'},{name:'Free Practice 2',day:'Friday',date:'Mar 6',time:'10:30 AM',utc:'2026-03-06T05:00:00Z'},
     {name:'Free Practice 3',day:'Saturday',date:'Mar 7',time:'07:00 AM',utc:'2026-03-07T01:30:00Z'},{name:'Qualifying',day:'Saturday',date:'Mar 7',time:'10:30 AM',utc:'2026-03-07T05:00:00Z'},
     {name:'Race',day:'Sunday',date:'Mar 8',time:'09:30 AM',utc:'2026-03-08T04:00:00Z'}]},
-  { round:2, name:'Chinese Grand Prix', circuit:'Shanghai International Circuit', location:'Shanghai', country:'China', flag:'🇨🇳', dateRange:'Mar 13-15', isSprint:true, podium:['ANT', 'RUS', 'HAM'], sessions:[
+  { round:2, name:'Chinese Grand Prix', circuit:'Shanghai International Circuit', location:'Shanghai', country:'China', flag:'🇨🇳', dateRange:'Mar 13-15', isSprint:true, podium:['ANT','RUS','HAM'], sprintPodium:['RUS','LEC','HAM'], sessions:[
     {name:'Free Practice 1',day:'Friday',date:'Mar 13',time:'09:00 AM',utc:'2026-03-13T03:30:00Z'},{name:'Sprint Qualifying',day:'Friday',date:'Mar 13',time:'01:00 PM',utc:'2026-03-13T07:30:00Z'},
     {name:'Sprint Race',day:'Saturday',date:'Mar 14',time:'08:30 AM',utc:'2026-03-14T03:00:00Z'},{name:'Qualifying',day:'Saturday',date:'Mar 14',time:'12:30 PM',utc:'2026-03-14T07:00:00Z'},
     {name:'Race',day:'Sunday',date:'Mar 15',time:'12:30 PM',utc:'2026-03-15T07:00:00Z'}]},
-  { round:3, name:'Japanese Grand Prix', circuit:'Suzuka International Racing Course', location:'Suzuka', country:'Japan', flag:'🇯🇵', dateRange:'Mar 27-29', isSprint:false, podium:['ANT', 'PIA', 'LEC'], sessions:[
+  { round:3, name:'Japanese Grand Prix', circuit:'Suzuka International Racing Course', location:'Suzuka', country:'Japan', flag:'🇯🇵', dateRange:'Mar 27-29', isSprint:false, podium:['ANT','PIA','LEC'], sessions:[
     {name:'Free Practice 1',day:'Friday',date:'Mar 27',time:'08:00 AM',utc:'2026-03-27T02:30:00Z'},{name:'Free Practice 2',day:'Friday',date:'Mar 27',time:'11:30 AM',utc:'2026-03-27T06:00:00Z'},
     {name:'Free Practice 3',day:'Saturday',date:'Mar 28',time:'08:00 AM',utc:'2026-03-28T02:30:00Z'},{name:'Qualifying',day:'Saturday',date:'Mar 28',time:'11:30 AM',utc:'2026-03-28T06:00:00Z'},
     {name:'Race',day:'Sunday',date:'Mar 29',time:'10:30 AM',utc:'2026-03-29T05:00:00Z'}]},
@@ -212,81 +212,90 @@ const motogpRaces = [
     {name:'Warm Up',day:'Sunday',date:'Nov 29',time:'02:10 PM',utc:'2026-11-29T08:40:00Z'},{name:'Race',day:'Sunday',date:'Nov 29',time:'06:30 PM',utc:'2026-11-29T13:00:00Z'}]}
 ];
 
-// ===== F1 2026 STANDINGS (After Round 2 — Chinese GP) =====
-// Real results: Russell won Australia, Antonelli won China (Mercedes 1-2 both races)
+// ===== F1 2026 STANDINGS (After Round 3 — Japanese GP) =====
+// Real results: Russell won Australia, Antonelli won China & Japan
+// Sprint: China Sprint — Russell P1, Leclerc P2, Hamilton P3
 const f1DriverStandings = [
-  {pos:1,name:'George Russell',team:'Mercedes',points:51,nat:'gb'},
-  {pos:2,name:'Kimi Antonelli',team:'Mercedes',points:47,nat:'it'},
-  {pos:3,name:'Charles Leclerc',team:'Ferrari',points:34,nat:'mc'},
-  {pos:4,name:'Lewis Hamilton',team:'Ferrari',points:33,nat:'gb'},
-  {pos:5,name:'Oliver Bearman',team:'Haas',points:17,nat:'gb'},
-  {pos:6,name:'Lando Norris',team:'McLaren',points:15,nat:'gb'},
-  {pos:7,name:'Pierre Gasly',team:'Alpine',points:9,nat:'fr'},
-  {pos:8,name:'Max Verstappen',team:'Red Bull Racing',points:8,nat:'nl'},
-  {pos:9,name:'Liam Lawson',team:'Racing Bulls',points:8,nat:'nz'},
-  {pos:10,name:'Arvid Lindblad',team:'Racing Bulls',points:4,nat:'gb'},
-  {pos:11,name:'Isack Hadjar',team:'Red Bull Racing',points:4,nat:'fr'},
-  {pos:12,name:'Oscar Piastri',team:'McLaren',points:3,nat:'au'},
-  {pos:13,name:'Carlos Sainz',team:'Williams',points:2,nat:'es'},
-  {pos:14,name:'Gabriel Bortoleto',team:'Sauber',points:2,nat:'br'},
-  {pos:15,name:'Franco Colapinto',team:'Alpine',points:1,nat:'ar'},
-  {pos:16,name:'Esteban Ocon',team:'Haas',points:0,nat:'fr'},
+  {pos:1,name:'Kimi Antonelli',team:'Mercedes',points:72,nat:'it'},
+  {pos:2,name:'George Russell',team:'Mercedes',points:63,nat:'gb'},
+  {pos:3,name:'Charles Leclerc',team:'Ferrari',points:49,nat:'mc'},
+  {pos:4,name:'Lewis Hamilton',team:'Ferrari',points:41,nat:'gb'},
+  {pos:5,name:'Lando Norris',team:'McLaren',points:25,nat:'gb'},
+  {pos:6,name:'Oscar Piastri',team:'McLaren',points:21,nat:'au'},
+  {pos:7,name:'Oliver Bearman',team:'Haas',points:17,nat:'gb'},
+  {pos:8,name:'Pierre Gasly',team:'Alpine',points:15,nat:'fr'},
+  {pos:9,name:'Max Verstappen',team:'Red Bull Racing',points:12,nat:'nl'},
+  {pos:10,name:'Liam Lawson',team:'Racing Bulls',points:10,nat:'nz'},
+  {pos:11,name:'Arvid Lindblad',team:'Racing Bulls',points:4,nat:'gb'},
+  {pos:12,name:'Isack Hadjar',team:'Red Bull Racing',points:4,nat:'fr'},
+  {pos:13,name:'Gabriel Bortoleto',team:'Sauber',points:2,nat:'br'},
+  {pos:14,name:'Carlos Sainz',team:'Williams',points:2,nat:'es'},
+  {pos:15,name:'Esteban Ocon',team:'Haas',points:1,nat:'fr'},
+  {pos:16,name:'Franco Colapinto',team:'Alpine',points:1,nat:'ar'},
   {pos:17,name:'Nico Hülkenberg',team:'Sauber',points:0,nat:'de'},
   {pos:18,name:'Alex Albon',team:'Williams',points:0,nat:'th'},
-  {pos:19,name:'Fernando Alonso',team:'Aston Martin',points:0,nat:'es'},
-  {pos:20,name:'Lance Stroll',team:'Aston Martin',points:0,nat:'ca'},
-  {pos:21,name:'Valtteri Bottas',team:'Cadillac',points:0,nat:'fi'},
-  {pos:22,name:'Sergio Pérez',team:'Cadillac',points:0,nat:'mx'}
+  {pos:19,name:'Valtteri Bottas',team:'Cadillac',points:0,nat:'fi'},
+  {pos:20,name:'Sergio Pérez',team:'Cadillac',points:0,nat:'mx'},
+  {pos:21,name:'Fernando Alonso',team:'Aston Martin',points:0,nat:'es'},
+  {pos:22,name:'Lance Stroll',team:'Aston Martin',points:0,nat:'ca'}
 ];
 const f1TeamStandings = [
-  {pos:1,name:'Mercedes',points:98,color:'#00f5d0',drivers:['George Russell','Kimi Antonelli'], secondary: '#00a39e'},
-  {pos:2,name:'Ferrari',points:67,color:'#da291c',drivers:['Charles Leclerc','Lewis Hamilton'], secondary: '#ffffff'},
-  {pos:3,name:'McLaren',points:18,color:'#ff8000',drivers:['Lando Norris','Oscar Piastri'], secondary: '#ffffff'},
-  {pos:4,name:'Haas',points:17,color:'#e6002d',drivers:['Oliver Bearman','Esteban Ocon'], secondary: '#000000'},
-  {pos:5,name:'Racing Bulls',points:12,color:'#070b36',drivers:['Liam Lawson','Arvid Lindblad'], secondary: '#ffffff'},
-  {pos:6,name:'Red Bull Racing',points:12,color:'#00162b',drivers:['Max Verstappen','Isack Hadjar'], secondary: '#db0a40'},
-  {pos:7,name:'Alpine',points:10,color:'#061a4d',drivers:['Pierre Gasly','Franco Colapinto'], secondary: '#FF88BD'},
-  {pos:8,name:'Williams',points:2,color:'#000a20',drivers:['Carlos Sainz','Alex Albon'], secondary: '#2270ff'},
-  {pos:9,name:'Sauber',points:2,color:'#101319',drivers:['Gabriel Bortoleto','Nico Hülkenberg'], secondary: '#ffffff'}, // Audi colors
-  {pos:10,name:'Aston Martin',points:0,color:'#00665e',drivers:['Fernando Alonso','Lance Stroll'], secondary: '#b9c600'},
-  {pos:11,name:'Cadillac',points:0,color:'#ffffff',drivers:['Valtteri Bottas','Sergio Pérez'], secondary: '#000000'}
+  {pos:1,name:'Mercedes',points:135,color:'#00f5d0',drivers:['Kimi Antonelli','George Russell'], secondary: '#00a39e'},
+  {pos:2,name:'Ferrari',points:90,color:'#da291c',drivers:['Charles Leclerc','Lewis Hamilton'], secondary: '#ffffff'},
+  {pos:3,name:'McLaren',points:46,color:'#ff8000',drivers:['Lando Norris','Oscar Piastri'], secondary: '#ffffff'},
+  {pos:4,name:'Haas',points:18,color:'#e6002d',drivers:['Oliver Bearman','Esteban Ocon'], secondary: '#000000'},
+  {pos:5,name:'Alpine',points:16,color:'#061a4d',drivers:['Pierre Gasly','Franco Colapinto'], secondary: '#FF88BD'},
+  {pos:6,name:'Red Bull Racing',points:16,color:'#00162b',drivers:['Max Verstappen','Isack Hadjar'], secondary: '#db0a40'},
+  {pos:7,name:'Racing Bulls',points:14,color:'#070b36',drivers:['Liam Lawson','Arvid Lindblad'], secondary: '#ffffff'},
+  {pos:8,name:'Sauber',points:2,color:'#101319',drivers:['Gabriel Bortoleto','Nico Hülkenberg'], secondary: '#ffffff'},
+  {pos:9,name:'Williams',points:2,color:'#000a20',drivers:['Carlos Sainz','Alex Albon'], secondary: '#2270ff'},
+  {pos:10,name:'Cadillac',points:0,color:'#ffffff',drivers:['Valtteri Bottas','Sergio Pérez'], secondary: '#000000'},
+  {pos:11,name:'Aston Martin',points:0,color:'#00665e',drivers:['Fernando Alonso','Lance Stroll'], secondary: '#b9c600'}
 ];
 
-// ===== MOTOGP 2026 STANDINGS (After Round 1 — Thailand GP + Brazil Sprint) =====
-// Real results: Acosta won Thailand Sprint, Bezzecchi won Thailand Race, Marquez won Brazil Sprint
+// ===== MOTOGP 2026 STANDINGS (After Round 3 — Americas GP) =====
+// Real results after Thailand, Brazil, Americas
 const motogpRiderStandings = [
-  {pos:1,name:'Pedro Acosta',team:'Red Bull KTM',points:44,nat:'es'},
-  {pos:2,name:'Marco Bezzecchi',team:'Aprilia Racing',points:40,nat:'it'},
-  {pos:3,name:'Raúl Fernández',team:'Trackhouse Racing',points:34,nat:'es'},
-  {pos:4,name:'Jorge Martín',team:'Aprilia Racing',points:31,nat:'es'},
-  {pos:5,name:'Marc Márquez',team:'Ducati Lenovo Team',points:30,nat:'es'},
-  {pos:6,name:'Ai Ogura',team:'Trackhouse Racing',points:28,nat:'jp'},
-  {pos:7,name:'Fabio Di Giannantonio',team:'Pertamina VR46',points:23,nat:'it'},
-  {pos:8,name:'Brad Binder',team:'Red Bull KTM',points:18,nat:'za'},
-  {pos:9,name:'Franco Morbidelli',team:'Pertamina VR46',points:14,nat:'it'},
-  {pos:10,name:'Francesco Bagnaia',team:'Ducati Lenovo Team',points:12,nat:'it'},
-  {pos:11,name:'Maverick Viñales',team:'Aprilia Racing',points:8,nat:'es'},
-  {pos:12,name:'Fabio Quartararo',team:'Monster Yamaha',points:5,nat:'fr'},
-  {pos:13,name:'Enea Bastianini',team:'Red Bull KTM',points:4,nat:'it'},
-  {pos:14,name:'Alex Márquez',team:'Gresini Racing',points:3,nat:'es'},
-  {pos:15,name:'Jack Miller',team:'Pramac Yamaha',points:2,nat:'au'}
+  {pos:1,name:'Marco Bezzecchi',team:'Aprilia Racing',points:81,nat:'it'},
+  {pos:2,name:'Jorge Martín',team:'Aprilia Racing',points:77,nat:'es'},
+  {pos:3,name:'Pedro Acosta',team:'Red Bull KTM Factory Racing',points:60,nat:'es'},
+  {pos:4,name:'Fabio Di Giannantonio',team:'Pertamina Enduro VR46',points:50,nat:'it'},
+  {pos:5,name:'Marc Márquez',team:'Ducati Lenovo Team',points:45,nat:'es'},
+  {pos:6,name:'Raúl Fernández',team:'Trackhouse Racing',points:40,nat:'es'},
+  {pos:7,name:'Ai Ogura',team:'Trackhouse Racing',points:37,nat:'jp'},
+  {pos:8,name:'Alex Márquez',team:'Gresini Racing',points:28,nat:'es'},
+  {pos:9,name:'Francesco Bagnaia',team:'Ducati Lenovo Team',points:25,nat:'it'},
+  {pos:10,name:'Luca Marini',team:'Honda HRC Castrol',points:23,nat:'it'},
+  {pos:11,name:'Enea Bastianini',team:'Red Bull KTM Tech3',points:22,nat:'it'},
+  {pos:12,name:'Brad Binder',team:'Red Bull KTM Factory Racing',points:17,nat:'za'},
+  {pos:13,name:'Franco Morbidelli',team:'Pertamina Enduro VR46',points:14,nat:'it'},
+  {pos:14,name:'Fermín Aldeguer',team:'Gresini Racing',points:13,nat:'es'},
+  {pos:15,name:'Johann Zarco',team:'Honda LCR',points:13,nat:'fr'},
+  {pos:16,name:'Diogo Moreira',team:'Honda LCR',points:9,nat:'br'},
+  {pos:17,name:'Fabio Quartararo',team:'Monster Yamaha',points:6,nat:'fr'},
+  {pos:18,name:'Alex Rins',team:'Monster Yamaha',points:3,nat:'es'},
+  {pos:19,name:'Joan Mir',team:'Honda HRC Castrol',points:3,nat:'es'},
+  {pos:20,name:'Toprak Razgatlioglu',team:'Pramac Yamaha',points:1,nat:'tr'},
+  {pos:21,name:'Maverick Viñales',team:'Red Bull KTM Tech3',points:0,nat:'es'},
+  {pos:22,name:'Jack Miller',team:'Pramac Yamaha',points:0,nat:'au'}
 ];
 const motogpTeamStandings = [
-  {pos:1,name:'Aprilia Racing',points:79,color:'#a30000',drivers:['Marco Bezzecchi','Jorge Martín']},
-  {pos:2,name:'Red Bull KTM',points:66,color:'#ff6600',drivers:['Pedro Acosta','Brad Binder']},
-  {pos:3,name:'Trackhouse Racing',points:62,color:'#1e1e1e',drivers:['Raúl Fernández','Ai Ogura']},
-  {pos:4,name:'Ducati Lenovo Team',points:42,color:'#cc0000',drivers:['Marc Márquez','Francesco Bagnaia']},
-  {pos:5,name:'Pertamina VR46',points:37,color:'#ffdd00',drivers:['Fabio Di Giannantonio','Franco Morbidelli']},
-  {pos:6,name:'Monster Yamaha',points:5,color:'#0033cc',drivers:['Fabio Quartararo','']},
-  {pos:7,name:'Gresini Racing',points:3,color:'#00bfff',drivers:['Alex Márquez','']},
-  {pos:8,name:'Pramac Yamaha',points:2,color:'#660099',drivers:['Jack Miller','']},
-  {pos:9,name:'Honda LCR',points:0,color:'#ff0000',drivers:['','']},
-  {pos:10,name:'Honda Repsol',points:0,color:'#ff4500',drivers:['','']}
+  {pos:1,name:'Aprilia Racing',points:158,color:'#a30000',drivers:['Marco Bezzecchi','Jorge Martín']},
+  {pos:2,name:'Red Bull KTM Factory Racing',points:77,color:'#ff6600',drivers:['Pedro Acosta','Brad Binder']},
+  {pos:3,name:'Trackhouse Racing',points:77,color:'#1e1e1e',drivers:['Raúl Fernández','Ai Ogura']},
+  {pos:4,name:'Ducati Lenovo Team',points:70,color:'#cc0000',drivers:['Marc Márquez','Francesco Bagnaia']},
+  {pos:5,name:'Pertamina Enduro VR46',points:64,color:'#ffdd00',drivers:['Fabio Di Giannantonio','Franco Morbidelli']},
+  {pos:6,name:'Gresini Racing',points:41,color:'#00bfff',drivers:['Alex Márquez','Fermín Aldeguer']},
+  {pos:7,name:'Honda HRC Castrol',points:26,color:'#ff4500',drivers:['Luca Marini','Joan Mir']},
+  {pos:8,name:'Red Bull KTM Tech3',points:22,color:'#ff6600',drivers:['Enea Bastianini','Maverick Viñales']},
+  {pos:9,name:'Honda LCR',points:22,color:'#ff0000',drivers:['Johann Zarco','Diogo Moreira']},
+  {pos:10,name:'Monster Yamaha',points:9,color:'#0033cc',drivers:['Fabio Quartararo','Alex Rins']},
+  {pos:11,name:'Pramac Yamaha',points:1,color:'#660099',drivers:['Toprak Razgatlioglu','Jack Miller']}
 ];
 const motogpConstructorStandings = [
-  {pos:1,name:'KTM',points:66,color:'#ff6600'},
-  {pos:2,name:'Aprilia',points:79,color:'#a30000'},
-  {pos:3,name:'Ducati',points:42,color:'#cc0000'},
-  {pos:4,name:'Yamaha',points:5,color:'#0033cc'},
-  {pos:5,name:'Honda',points:0,color:'#ff0000'}
+  {pos:1,name:'Aprilia',points:158,color:'#a30000'},
+  {pos:2,name:'KTM',points:99,color:'#ff6600'},
+  {pos:3,name:'Ducati',points:70,color:'#cc0000'},
+  {pos:4,name:'Honda',points:48,color:'#ff0000'},
+  {pos:5,name:'Yamaha',points:10,color:'#0033cc'}
 ];
