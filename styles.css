@@ -41,14 +41,18 @@ html {
 body {
     font-family: 'Inter', sans-serif;
     background-color: #08080f;
-    /* Premium dark background */
     color: #ffffff;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    /* Prevent horizontal scroll */
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
+    /* Disable text selection globally (prevents mobile long-press copy/paste) */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
 }
 
 /* ===== VIEWS ===== */
@@ -562,13 +566,9 @@ body {
     animation: pulseGlow 1s ease infinite;
 }
 
-/* Completed race: faded checkered flag overlay */
+/* Completed race: full brightness with chequered flag overlay */
 .race-card.completed-race {
     position: relative;
-    opacity: 0.75;
-}
-
-.race-card.completed-race:hover {
     opacity: 1;
 }
 
@@ -583,10 +583,10 @@ body {
     pointer-events: none;
     border-radius: inherit;
     background-image:
-        linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%),
-        linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%);
+        linear-gradient(45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.05) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.05) 75%);
     background-size: 20px 20px;
     background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
@@ -715,8 +715,10 @@ body {
 }
 
 /* Global button cleanup for interactive states */
-button {
+button, label, input, .switch, .slider, a {
     -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    outline: none;
 }
 
 /* ===== SWITCHER MENU ===== */
@@ -1034,6 +1036,11 @@ button {
 
 input:checked+.slider {
     background-color: var(--accent);
+}
+
+input:focus+.slider {
+    box-shadow: none;
+    outline: none;
 }
 
 input:checked+.slider:before {
@@ -2412,21 +2419,24 @@ input:checked+.slider:before {
     font-weight: 700;
     color: #ffffff;
     letter-spacing: 0.3px;
+    font-family: 'Inter', sans-serif;
 }
 
 .session-date {
     font-size: 0.68rem;
-    color: rgba(255, 255, 255, 0.5);
-    font-weight: 500;
+    color: #ffffff;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
 }
 
 .session-time-val {
     font-size: 0.72rem;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.9);
+    color: #ffffff;
     background: rgba(255, 255, 255, 0.1);
     padding: 2px 7px;
     border-radius: 4px;
+    font-family: 'Inter', sans-serif;
 }
 
 /* Toggle button */
@@ -2545,15 +2555,18 @@ input:checked+.slider:before {
 
     .session-type {
         font-size: 0.62rem;
+        color: #ffffff;
     }
 
     .session-date {
         font-size: 0.58rem;
+        color: #ffffff;
     }
 
     .session-time-val {
         font-size: 0.62rem;
         padding: 2px 5px;
+        color: #ffffff;
     }
 
     .timer-logo {

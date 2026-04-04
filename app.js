@@ -81,6 +81,19 @@ const app = {
     return name.replace('Andrea Kimi Antonelli', 'Kimi Antonelli').trim();
   },
 
+  // Central team name normalization — maps API names to app display names
+  normalizeTeamName(name) {
+    if (!name) return '';
+    // Ergast / Jolpi API name mappings for 2026
+    if (name === 'RB F1 Team' || name === 'RB') return 'Racing Bulls';
+    if (name === 'Kick Sauber' || name === 'Audi') return 'Sauber';
+    if (name === 'Alpine F1 Team') return 'Alpine';
+    if (name === 'Haas F1 Team') return 'Haas';
+    if (name === 'Cadillac F1 Team') return 'Cadillac';
+    if (name === 'Red Bull' && !name.includes('Racing')) return 'Red Bull Racing';
+    return name;
+  },
+
   // ----- Navigation -----
   showView(viewId, scrollToTop = true) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -95,28 +108,7 @@ const app = {
   },
   goBack() {
     if (this.history.length > 0) {
-      const prevView = this.history.pop();
-      if (prevView === 'landing-view') {
-        this.currentSeries = null;
-        this.resetSeriesSelection();
-      }
-      const isReturningToCalendar = prevView === 'calendar-view';
-      this.showView(prevView, !isReturningToCalendar);
-
-      // Immediately update timer visibility
-      this.updateTimerVisibility();
-
-      if (isReturningToCalendar) {
-        console.log("Restoring scroll position to:", this.calendarScrollPos);
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            window.scrollTo(0, this.calendarScrollPos);
-            document.documentElement.scrollTop = this.calendarScrollPos;
-            const view = document.getElementById(prevView);
-            if (view) view.scrollTop = this.calendarScrollPos;
-          });
-        });
-      }
+      history.back(); // Use Browser History API to trigger popstate
     } else {
       this.currentSeries = null;
       this.resetSeriesSelection();
@@ -126,6 +118,7 @@ const app = {
   },
   pushHistory(viewId) {
     this.history.push(viewId);
+    history.pushState({ viewId: viewId }, '', '');
   },
 
   // ----- Menu Switcher -----
@@ -165,6 +158,41 @@ const app = {
 
   init() {
     console.log("App initializing...");
+    // Replace initial state so it's recorded
+    history.replaceState({ viewId: 'landing-view' }, '', '');
+
+    window.addEventListener('popstate', (e) => {
+      // The browser's back button was pressed.
+      if (this.history.length > 0) {
+        // Pop our internal history stack so it stays in sync
+        const prevView = this.history.pop();
+        
+        if (prevView === 'landing-view') {
+          this.currentSeries = null;
+          this.resetSeriesSelection();
+        }
+        const isReturningToCalendar = prevView === 'calendar-view';
+        this.showView(prevView, !isReturningToCalendar);
+        this.updateTimerVisibility();
+
+        if (isReturningToCalendar) {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              window.scrollTo(0, this.calendarScrollPos);
+              document.documentElement.scrollTop = this.calendarScrollPos;
+              const view = document.getElementById(prevView);
+              if (view) view.scrollTop = this.calendarScrollPos;
+            });
+          });
+        }
+      } else {
+        // Nothing in history stack, fallback to landing
+        this.currentSeries = null;
+        this.resetSeriesSelection();
+        this.showView('landing-view');
+        this.updateTimerVisibility();
+      }
+    });
     try {
       this.loadLiveF1Standings();
       this.loadLiveMotoGPData();
@@ -826,18 +854,30 @@ const app = {
             return '-'; // Not happened yet
           });
         } else {
-          // generate mock points if no matrix is available (Fallback/F1 legacy)
-          ptsArr = new Array(activeRaces.length).fill('0');
-          let ptsLeft = entry.points;
-          // Distribute points among first few races (completed)
-          const numCompleted = racesCompleted || 5;
-          for (let i = 0; i < numCompleted; i++) {
-            if (i === numCompleted - 1) { ptsArr[i] = ptsLeft.toString(); break; }
-            const slice = Math.floor(Math.random() * (ptsLeft / (numCompleted - i)) * 1.5);
-            ptsArr[i] = slice.toString();
-            ptsLeft -= slice;
+          // Use real API matrix data if available
+          const matrixData = masterType === 'team' ? this.liveF1TeamMaster : this.liveF1DriverMaster;
+          if (matrixData && matrixData[entry.name]) {
+            ptsArr = matrixData[entry.name];
+          } else if (matrixData) {
+            // Try fuzzy match — name might differ slightly between standings and results
+            const matrixKeys = Object.keys(matrixData);
+            const fuzzyKey = matrixKeys.find(k => 
+              k === entry.name || 
+              k.includes(entry.name) || 
+              entry.name.includes(k) ||
+              k.split(' ').pop() === entry.name.split(' ').pop()
+            );
+            if (fuzzyKey) {
+              ptsArr = matrixData[fuzzyKey];
+            } else {
+              console.warn(`Master matrix: No match for "${entry.name}" in keys:`, matrixKeys.slice(0, 5));
+              // Fallback: show dashes for future races
+              ptsArr = new Array(activeRaces.length).fill('-');
+            }
+          } else {
+            // No matrix data at all — show dashes
+            ptsArr = new Array(activeRaces.length).fill('-');
           }
-          // The rest stay '0'
         }
 
         ptsArr.forEach(p => {
@@ -1074,9 +1114,7 @@ const app = {
 
       let liveDrivers = dList.map(d => {
         let team = d.Constructors[0] ? d.Constructors[0].name : 'Unknown';
-        if (team === 'RB F1 Team' || team === 'RB') team = 'Racing Bulls';
-        if (team === 'Kick Sauber') team = 'Sauber';
-        if (team === 'Alpine F1 Team') team = 'Alpine';
+        team = this.normalizeTeamName(team);
         return {
           pos: parseInt(d.position),
           name: this.sanitizeDriverName(`${d.Driver.givenName} ${d.Driver.familyName}`),
@@ -1087,10 +1125,7 @@ const app = {
       });
 
       let liveTeams = tList.map(t => {
-        let teamName = t.Constructor.name;
-        if (teamName === 'RB F1 Team' || teamName === 'RB') teamName = 'Racing Bulls';
-        if (teamName === 'Kick Sauber') teamName = 'Sauber';
-        if (teamName === 'Alpine F1 Team') teamName = 'Alpine';
+        let teamName = this.normalizeTeamName(t.Constructor.name);
 
         const drivers = liveDrivers.filter(d => d.team === teamName).map(d => d.name);
         // Find color from fallback data
@@ -1148,17 +1183,17 @@ const app = {
             if (r.Results) {
               r.Results.forEach(res => {
                 const driverName = this.sanitizeDriverName(`${res.Driver.givenName} ${res.Driver.familyName}`);
-                let tName = res.Constructor.name;
-                if (tName === 'RB F1 Team' || tName === 'RB') tName = 'Racing Bulls';
-                if (tName === 'Kick Sauber') tName = 'Sauber';
-                if (tName === 'Alpine F1 Team') tName = 'Alpine';
+                let tName = this.normalizeTeamName(res.Constructor.name);
 
                 let pts = parseFloat(res.points);
 
                 // Add sprint round points if they exist
                 const sRace = sprints.find(sr => sr.round === r.round);
                 if (sRace && sRace.SprintResults) {
-                  const sResDriver = sRace.SprintResults.find(srd => `${srd.Driver.givenName} ${srd.Driver.familyName}` === driverName);
+                  const sResDriver = sRace.SprintResults.find(srd => {
+                    const srdName = this.sanitizeDriverName(`${srd.Driver.givenName} ${srd.Driver.familyName}`);
+                    return srdName === driverName;
+                  });
                   if (sResDriver) pts += parseFloat(sResDriver.points);
                 }
 
@@ -1169,6 +1204,29 @@ const app = {
                 teamRacePts[tName] = (teamRacePts[tName] || 0) + pts;
               });
 
+              // Also add sprint-only team points for drivers who didn't race (e.g. DNS)
+              const sRace = sprints.find(sr => sr.round === r.round);
+              if (sRace && sRace.SprintResults) {
+                sRace.SprintResults.forEach(srd => {
+                  const sDriverName = this.sanitizeDriverName(`${srd.Driver.givenName} ${srd.Driver.familyName}`);
+                  let sTName = this.normalizeTeamName(srd.Constructor.name);
+                  const sprintPts = parseFloat(srd.points);
+                  // Check if this driver was NOT in the main race results (already added above)
+                  const inRace = r.Results.some(res => 
+                    this.sanitizeDriverName(`${res.Driver.givenName} ${res.Driver.familyName}`) === sDriverName
+                  );
+                  if (!inRace && sprintPts > 0) {
+                    // Add sprint-only points to driver matrix
+                    if (driverMatrix[sDriverName]) {
+                      const existing = driverMatrix[sDriverName][targetIdx];
+                      const prev = existing && existing !== '-' ? parseFloat(existing) : 0;
+                      driverMatrix[sDriverName][targetIdx] = (prev + sprintPts).toString();
+                    }
+                    teamRacePts[sTName] = (teamRacePts[sTName] || 0) + sprintPts;
+                  }
+                });
+              }
+
               Object.keys(teamRacePts).forEach(tName => {
                 if (teamMatrix[tName]) teamMatrix[tName][targetIdx] = teamRacePts[tName] > 0 ? teamRacePts[tName].toString() : '0';
               });
@@ -1178,13 +1236,20 @@ const app = {
           this.liveF1DriverMaster = driverMatrix;
           this.liveF1TeamMaster = teamMatrix;
           this.liveF1RacesCompleted = Array.isArray(races) ? races.map(r => r.raceName.replace(' Grand Prix', '')) : [];
-          this.liveF1ResultsData = races; // Store raw results
-          this.liveF1SprintData = sprints; // Store raw sprints
+          this.liveF1ResultsData = races;
+          this.liveF1SprintData = sprints;
 
           // Re-render calendar if active
           const calView = document.getElementById('calendar-view');
           if (calView && calView.classList.contains('active') && this.currentSeries === 'f1') {
             this.renderRaceGrid();
+          }
+
+          // Re-render standings right away if active (matrix data is now available)
+          const stView = document.getElementById('standings-view');
+          if (stView && stView.classList.contains('active') && this.currentSeries === 'f1') {
+            const activeTab = document.querySelector('.standings-tab.active');
+            if (activeTab) this.renderStandingsTable(activeTab.id.replace('tab-', ''));
           }
         }
       } catch (err) {
@@ -1268,10 +1333,7 @@ const app = {
       if (type === 'race') {
         const race = this.liveF1ResultsData ? this.liveF1ResultsData.find(r => parseInt(r.round) === round) : null;
         if (race && race.Results) results = race.Results.map(r => {
-          let teamName = r.Constructor ? r.Constructor.name : '';
-          if (teamName === 'RB F1 Team' || teamName === 'RB') teamName = 'Racing Bulls';
-          if (teamName === 'Kick Sauber') teamName = 'Sauber';
-          if (teamName === 'Alpine F1 Team') teamName = 'Alpine';
+          let teamName = r.Constructor ? this.normalizeTeamName(r.Constructor.name) : '';
           return {
             pos: r.position,
             number: r.number || r.Driver.permanentNumber || '',
@@ -1286,10 +1348,7 @@ const app = {
       } else if (type === 'sprint') {
         const sprint = this.liveF1SprintData ? this.liveF1SprintData.find(s => parseInt(s.round) === round) : null;
         if (sprint && sprint.SprintResults) results = sprint.SprintResults.map(r => {
-          let teamName = r.Constructor ? r.Constructor.name : '';
-          if (teamName === 'RB F1 Team' || teamName === 'RB') teamName = 'Racing Bulls';
-          if (teamName === 'Kick Sauber') teamName = 'Sauber';
-          if (teamName === 'Alpine F1 Team') teamName = 'Alpine';
+          let teamName = r.Constructor ? this.normalizeTeamName(r.Constructor.name) : '';
           return {
             pos: r.position,
             number: r.number || r.Driver.permanentNumber || '',
@@ -1469,10 +1528,7 @@ const app = {
         </div>`;
 
       gridData.forEach(r => {
-        let teamName = r.team;
-        if (teamName === 'RB F1 Team' || teamName === 'RB') teamName = 'Racing Bulls';
-        if (teamName === 'Kick Sauber') teamName = 'Sauber';
-        if (teamName === 'Alpine F1 Team') teamName = 'Alpine';
+        let teamName = this.normalizeTeamName(r.team);
 
         const standings = typeof f1TeamStandings !== 'undefined' ? f1TeamStandings : [];
         const teamCol = standings.find(t => t.name === teamName || t.name.includes(teamName) || teamName.includes(t.name));
