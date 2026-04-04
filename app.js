@@ -107,18 +107,10 @@ const app = {
     }
   },
   goBack() {
-    if (this.history.length > 0) {
-      history.back(); // Use Browser History API to trigger popstate
-    } else {
-      this.currentSeries = null;
-      this.resetSeriesSelection();
-      this.showView('landing-view');
-      this.updateTimerVisibility();
-    }
+    history.back(); // Let the browser popstate event handle the UI updates
   },
-  pushHistory(viewId) {
-    this.history.push(viewId);
-    history.pushState({ viewId: viewId }, '', '');
+  pushToHistory(viewId, metadata = {}) {
+    history.pushState({ viewId, ...metadata }, '', '');
   },
 
   // ----- Menu Switcher -----
@@ -158,35 +150,39 @@ const app = {
 
   init() {
     console.log("App initializing...");
-    // Replace initial state so it's recorded
+    // Replace initial state so it's reliably recorded
     history.replaceState({ viewId: 'landing-view' }, '', '');
 
     window.addEventListener('popstate', (e) => {
-      // The browser's back button was pressed.
-      if (this.history.length > 0) {
-        // Pop our internal history stack so it stays in sync
-        const prevView = this.history.pop();
-        
-        if (prevView === 'landing-view') {
+      if (e.state && e.state.viewId) {
+        const targetView = e.state.viewId;
+
+        if (targetView === 'landing-view') {
           this.currentSeries = null;
           this.resetSeriesSelection();
         }
-        const isReturningToCalendar = prevView === 'calendar-view';
-        this.showView(prevView, !isReturningToCalendar);
+
+        const isReturningToCalendar = targetView === 'calendar-view';
+        this.showView(targetView, !isReturningToCalendar);
         this.updateTimerVisibility();
+
+        // If returned to detail, we need to ensure right detail is shown
+        if (targetView === 'race-detail-view' && e.state.round) {
+          this.showRaceDetail(e.state.round, true); 
+        }
 
         if (isReturningToCalendar) {
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
               window.scrollTo(0, this.calendarScrollPos);
               document.documentElement.scrollTop = this.calendarScrollPos;
-              const view = document.getElementById(prevView);
+              const view = document.getElementById(targetView);
               if (view) view.scrollTop = this.calendarScrollPos;
             });
           });
         }
       } else {
-        // Nothing in history stack, fallback to landing
+        // Fallback
         this.currentSeries = null;
         this.resetSeriesSelection();
         this.showView('landing-view');
@@ -263,7 +259,6 @@ const app = {
   startSeries(series, view, e) {
     if (e) e.stopPropagation();
     this.currentSeries = series;
-    this.pushHistory('landing-view');
     this.setAccentColor(series);
 
     // Update headers first
@@ -272,9 +267,9 @@ const app = {
     // Immediately show the correct timer
     this.updateTimerVisibility();
 
-    // Navigate (skip history as we already pushed landing-view)
-    if (view === 'races') this.showRaces(true);
-    else if (view === 'standings') this.showStandings(true);
+    // Navigate (never skip history when launching from landing page)
+    if (view === 'races') this.showRaces(false);
+    else if (view === 'standings') this.showStandings(false);
 
     if (series === 'f1' && !this.liveF1ResultsData) {
       this.loadLiveF1Standings();
@@ -464,7 +459,9 @@ const app = {
   showRaces(skipHistory = false) {
     console.log("showRaces called, series:", this.currentSeries);
     try {
-      if (!skipHistory) this.pushHistory('landing-view');
+      if (!skipHistory) {
+        this.pushToHistory('calendar-view');
+      }
       const races = this.currentSeries === 'f1' ? f1Races : motogpRaces;
       const title = this.currentSeries === 'f1' ? '2026 RACES' : '2026 RACES';
       document.getElementById('calendar-title').textContent = title;
@@ -522,10 +519,12 @@ const app = {
   },
 
   // ----- Race Detail -----
-  showRaceDetail(round) {
+  showRaceDetail(round, isFromHistoryPop = false) {
     // Save current scroll position before leaving the calendar
-    this.calendarScrollPos = window.pageYOffset || document.documentElement.scrollTop;
-    this.pushHistory('calendar-view');
+    if (!isFromHistoryPop) {
+      this.calendarScrollPos = window.pageYOffset || document.documentElement.scrollTop;
+      this.pushToHistory('race-detail-view', { round });
+    }
     this.currentRound = round;
     const races = this.currentSeries === 'f1' ? f1Races : motogpRaces;
     const race = races.find(r => r.round === round);
@@ -670,7 +669,9 @@ const app = {
 
   // ----- Standings -----
   showStandings(skipHistory = false) {
-    if (!skipHistory) this.pushHistory('landing-view'); // Standard back is now landing-view
+    if (!skipHistory) {
+      this.pushToHistory('standings-view');
+    }
     const title = this.currentSeries === 'f1' ? '2026 STANDINGS' : '2026 STANDINGS';
     document.getElementById('standings-title').textContent = title;
     this.renderStandingsTabs();
@@ -693,7 +694,6 @@ const app = {
     } else {
       tabs = [
         { id: 'riders', label: 'Riders' },
-        { id: 'master-riders', label: 'Master Riders' },
         { id: 'teams', label: 'Teams' },
         { id: 'constructors', label: 'Constructors' }
       ];

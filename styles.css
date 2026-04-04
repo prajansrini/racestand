@@ -5,6 +5,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+img {
+    -webkit-touch-callout: none !important;
+    -webkit-user-drag: none;
+    pointer-events: none;
 }
 
 :root {
