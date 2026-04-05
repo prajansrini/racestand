@@ -482,7 +482,10 @@ const app = {
     grid.innerHTML = races.map((race, i) => {
       const status = this.getRaceStatus(race);
       const isNext = race.round === nextRound;
-      const statusClass = status === 'completed' ? 'completed-race' : (isNext ? 'next-race' : '');
+      let statusClass = '';
+      if (status === 'completed') statusClass = 'completed-race';
+      else if (status === 'live') statusClass = 'live-race';
+      else if (isNext) statusClass = 'next-race';
       const cancelClass = race.isCancelled ? 'cancelled-race' : '';
 
       const trackSvg = this.getTrackSvg(race.circuit, accentColor);
@@ -756,7 +759,7 @@ const app = {
       } else if (tabId === 'teams') {
         data = this.liveMotoGPTeamStandings || motogpTeamStandings;
         isTeam = true;
-      } else {
+      } else if (tabId === 'constructors') {
         data = this.liveMotoGPConstructorStandings || motogpConstructorStandings;
         isTeam = true;
       }
@@ -1666,9 +1669,10 @@ const app = {
       document.getElementById('f1-secs').textContent = String(secs).padStart(2, '0');
       document.getElementById('f1-location').textContent = f1Next.race.location;
       document.getElementById('f1-circuit').textContent = f1Next.race.circuit;
-      document.getElementById('f1-session-type').textContent = f1Next.session.name;
-      document.getElementById('f1-session-date').textContent = this.formatCountdownDate(f1Next.sessionDate);
-      document.getElementById('f1-session-time').textContent = this.formatCountdownTime(f1Next.sessionDate);
+      document.getElementById('f1-session-type').textContent = f1Next.session.name + ' ';
+      const f1Date = document.getElementById('f1-session-date');
+      if (f1Date) f1Date.style.display = 'none';
+      document.getElementById('f1-session-time').textContent = `${this.formatCountdownDate(f1Next.sessionDate)} ${this.formatCountdownTime(f1Next.sessionDate)}`;
     }
 
     // MotoGP countdown
@@ -1686,9 +1690,10 @@ const app = {
       document.getElementById('motogp-secs').textContent = String(secs).padStart(2, '0');
       document.getElementById('motogp-location').textContent = mgNext.race.location;
       document.getElementById('motogp-circuit').textContent = mgNext.race.circuit;
-      document.getElementById('motogp-session-type').textContent = mgNext.session.name;
-      document.getElementById('motogp-session-date').textContent = this.formatCountdownDate(mgNext.sessionDate);
-      document.getElementById('motogp-session-time').textContent = this.formatCountdownTime(mgNext.sessionDate);
+      document.getElementById('motogp-session-type').textContent = mgNext.session.name + ' ';
+      const mgDate = document.getElementById('motogp-session-date');
+      if (mgDate) mgDate.style.display = 'none';
+      document.getElementById('motogp-session-time').textContent = `${this.formatCountdownDate(mgNext.sessionDate)} ${this.formatCountdownTime(mgNext.sessionDate)}`;
     }
 
     // Update visibility based on current context

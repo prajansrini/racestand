@@ -609,6 +609,29 @@ body {
     box-shadow: 0 0 50px rgba(225, 6, 0, 0.3), inset 0 0 40px rgba(225, 6, 0, 0.08);
 }
 
+/* Live race: intense pulsing border based on series color */
+.race-card.live-race {
+    border: 2px solid var(--accent);
+    background: linear-gradient(135deg, var(--accent-glow) 0%, rgba(0, 0, 0, 0) 60%, var(--bg-card) 100%);
+    box-shadow: 0 0 35px var(--accent-glow), inset 0 0 20px var(--accent-glow);
+    animation: liveBorderPulse 1.5s infinite alternate;
+}
+
+.race-card.live-race:hover {
+    box-shadow: 0 0 50px var(--accent-glow), inset 0 0 30px var(--accent-glow);
+}
+
+@keyframes liveBorderPulse {
+    from {
+        border-color: rgba(255, 255, 255, 0.5);
+        box-shadow: 0 0 15px var(--accent-glow), inset 0 0 10px rgba(255, 255, 255, 0.05);
+    }
+    to {
+        border-color: var(--accent);
+        box-shadow: 0 0 45px var(--accent-glow), inset 0 0 35px var(--accent-glow);
+    }
+}
+
 .motogp-card:hover h2 {
     color: var(--motogp-orange);
 }
