@@ -280,22 +280,22 @@ const motogpRiderStandings = [
   {pos:22,name:'Jack Miller',team:'Pramac Yamaha',points:0,nat:'au'}
 ];
 const motogpTeamStandings = [
-  {pos:1,name:'Aprilia Racing',points:158,color:'#a30000',drivers:['Marco Bezzecchi','Jorge Martín']},
+  {pos:1,name:'Aprilia Racing Team',points:158,color:'#a30000',drivers:['Marco Bezzecchi','Jorge Martín']},
   {pos:2,name:'Red Bull KTM Factory Racing',points:77,color:'#ff6600',drivers:['Pedro Acosta','Brad Binder']},
-  {pos:3,name:'Trackhouse Racing',points:77,color:'#1e1e1e',drivers:['Raúl Fernández','Ai Ogura']},
-  {pos:4,name:'Ducati Lenovo Team',points:70,color:'#cc0000',drivers:['Marc Márquez','Francesco Bagnaia']},
-  {pos:5,name:'Pertamina Enduro VR46',points:64,color:'#ffdd00',drivers:['Fabio Di Giannantonio','Franco Morbidelli']},
+  {pos:3,name:'Trackhouse Racing Team',points:77,color:'#1e1e1e',drivers:['Raúl Fernández','Ai Ogura']},
+  {pos:4,name:'Ducati Team',points:70,color:'#cc0000',drivers:['Marc Márquez','Francesco Bagnaia']},
+  {pos:5,name:'Team VR46',points:64,color:'#ffdd00',drivers:['Fabio Di Giannantonio','Franco Morbidelli']},
   {pos:6,name:'Gresini Racing',points:41,color:'#00bfff',drivers:['Alex Márquez','Fermín Aldeguer']},
-  {pos:7,name:'Honda HRC Castrol',points:26,color:'#ff4500',drivers:['Luca Marini','Joan Mir']},
-  {pos:8,name:'Red Bull KTM Tech3',points:22,color:'#ff6600',drivers:['Enea Bastianini','Maverick Viñales']},
-  {pos:9,name:'Honda LCR',points:22,color:'#ff0000',drivers:['Johann Zarco','Diogo Moreira']},
-  {pos:10,name:'Monster Yamaha',points:9,color:'#0033cc',drivers:['Fabio Quartararo','Alex Rins']},
-  {pos:11,name:'Pramac Yamaha',points:1,color:'#660099',drivers:['Toprak Razgatlioglu','Jack Miller']}
+  {pos:7,name:'Honda HRC',points:26,color:'#ff4500',drivers:['Luca Marini','Joan Mir']},
+  {pos:8,name:'Tech 3',points:22,color:'#ff6600',drivers:['Enea Bastianini','Maverick Viñales']},
+  {pos:9,name:'Team LCR',points:22,color:'#ff0000',drivers:['Johann Zarco','Diogo Moreira']},
+  {pos:10,name:'Yamaha Factory Racing',points:9,color:'#0033cc',drivers:['Fabio Quartararo','Alex Rins']},
+  {pos:11,name:'Pramac Racing',points:1,color:'#660099',drivers:['Toprak Razgatlioglu','Jack Miller']}
 ];
 const motogpConstructorStandings = [
-  {pos:1,name:'Aprilia',points:158,color:'#a30000'},
-  {pos:2,name:'KTM',points:99,color:'#ff6600'},
-  {pos:3,name:'Ducati',points:70,color:'#cc0000'},
-  {pos:4,name:'Honda',points:48,color:'#ff0000'},
-  {pos:5,name:'Yamaha',points:10,color:'#0033cc'}
+  {pos:1,name:'Aprilia',points:101,color:'#a30000'},
+  {pos:2,name:'Ducati',points:69,color:'#cc0000'},
+  {pos:3,name:'KTM',points:65,color:'#ff6600'},
+  {pos:4,name:'Honda',points:28,color:'#ff0000'},
+  {pos:5,name:'Yamaha',points:9,color:'#0033cc'}
 ];
