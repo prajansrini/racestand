@@ -299,3 +299,292 @@ const motogpConstructorStandings = [
   {pos:4,name:'Honda',points:28,color:'#ff0000'},
   {pos:5,name:'Yamaha',points:9,color:'#0033cc'}
 ];
+
+// ===== INDYCAR / INDY NXT 2026 CALENDAR =====
+// Based on the 2026 / 2025 schedule provided
+const indycarRaces = [
+  { round:1, name:'Grand Prix of St. Petersburg', circuit:'Streets of St. Petersburg', location:'St. Petersburg', country:'USA', flag:'🇺🇸', dateRange:'Mar 1', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'Mar 1',time:'12:00 PM',utc:'2026-03-01T17:00:00Z'}
+  ]},
+  { round:2, name:'Phoenix Grand Prix', circuit:'Phoenix Raceway', location:'Phoenix', country:'USA', flag:'🇺🇸', dateRange:'Mar 7', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Saturday',date:'Mar 7',time:'03:00 PM',utc:'2026-03-07T20:00:00Z'}
+  ]},
+  { round:3, name:'Grand Prix of Arlington', circuit:'Streets of Arlington', location:'Arlington', country:'USA', flag:'🇺🇸', dateRange:'Mar 15', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'Mar 15',time:'12:30 PM',utc:'2026-03-15T16:30:00Z'}
+  ]},
+  { round:4, name:'Grand Prix of Alabama', circuit:'Barber Motorsports Park', location:'Birmingham', country:'USA', flag:'🇺🇸', dateRange:'Mar 29', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'Mar 29',time:'01:00 PM',utc:'2026-03-29T17:00:00Z'}
+  ]},
+  { round:5, name:'Grand Prix of Long Beach', circuit:'Streets of Long Beach', location:'Long Beach', country:'USA', flag:'🇺🇸', dateRange:'Apr 19', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'Apr 19',time:'05:30 PM',utc:'2026-04-19T21:30:00Z'}
+  ]},
+  { round:6, name:'Indianapolis Grand Prix', circuit:'IMS Road Course', location:'Indianapolis', country:'USA', flag:'🇺🇸', dateRange:'May 9', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Saturday',date:'May 9',time:'04:30 PM',utc:'2026-05-09T20:30:00Z'}
+  ]},
+  { round:7, name:'110th Running of the Indianapolis 500', circuit:'Indianapolis Motor Speedway', location:'Indianapolis', country:'USA', flag:'🇺🇸', dateRange:'May 24', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'May 24',time:'10:00 AM',utc:'2026-05-24T14:00:00Z'}
+  ]},
+  { round:8, name:'Detroit Grand Prix', circuit:'Streets of Detroit', location:'Detroit', country:'USA', flag:'🇺🇸', dateRange:'May 31', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'May 31',time:'12:30 PM',utc:'2026-05-31T16:30:00Z'}
+  ]},
+  { round:9, name:'Bommarito Automotive Group 500', circuit:'World Wide Technology Raceway', location:'Madison', country:'USA', flag:'🇺🇸', dateRange:'Jun 7', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'Jun 7',time:'09:00 PM',utc:'2026-06-08T01:00:00Z'}
+  ]},
+  { round:10, name:'Grand Prix at Road America', circuit:'Road America', location:'Elkhart Lake', country:'USA', flag:'🇺🇸', dateRange:'Jun 21', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'Jun 21',time:'02:00 PM',utc:'2026-06-21T18:00:00Z'}
+  ]},
+  { round:11, name:'Mid-Ohio Grand Prix', circuit:'Mid-Ohio Sports Car Course', location:'Lexington', country:'USA', flag:'🇺🇸', dateRange:'Jul 5', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'Jul 5',time:'12:30 PM',utc:'2026-07-05T16:30:00Z'}
+  ]},
+  { round:12, name:'Music City Grand Prix', circuit:'Nashville Superspeedway', location:'Lebanon', country:'USA', flag:'🇺🇸', dateRange:'Jul 19', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'Jul 19',time:'TBA',utc:''}
+  ]},
+  { round:13, name:'Portland Grand Prix', circuit:'Portland International Raceway', location:'Portland', country:'USA', flag:'🇺🇸', dateRange:'Aug 9', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'Aug 9',time:'04:00 PM',utc:'2026-08-09T20:00:00Z'}
+  ]},
+  { round:14, name:'Grand Prix of Markham', circuit:'Streets of Markham', location:'Markham', country:'CANADA', flag:'🇨🇦', dateRange:'Aug 16', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'Aug 16',time:'12:00 PM',utc:'2026-08-16T16:00:00Z'}
+  ]},
+  { round:15, name:'Grand Prix of Washington D.C.', circuit:'Streets of Washington, D.C.', location:'Washington D.C.', country:'USA', flag:'🇺🇸', dateRange:'Aug 23', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'Aug 23',time:'TBA',utc:''}
+  ]},
+  { round:16, name:'Milwaukee Mile Race 1', circuit:'Milwaukee Mile', location:'West Allis', country:'USA', flag:'🇺🇸', dateRange:'Aug 29', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Saturday',date:'Aug 29',time:'02:30 PM',utc:'2026-08-29T18:30:00Z'}
+  ]},
+  { round:17, name:'Milwaukee Mile Race 2', circuit:'Milwaukee Mile', location:'West Allis', country:'USA', flag:'🇺🇸', dateRange:'Aug 30', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'Aug 30',time:'01:00 PM',utc:'2026-08-30T17:00:00Z'}
+  ]},
+  { round:18, name:'Monterey Grand Prix', circuit:'WeatherTech Raceway Laguna Seca', location:'Monterey', country:'USA', flag:'🇺🇸', dateRange:'Sep 6', isSprint:false, podium:[], sessions:[
+    {name:'Practice 1',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Practice 2',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Qualifying',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Warmup',day:'TBD',date:'TBD',time:'TBD',utc:''},
+    {name:'Race',day:'Sunday',date:'Sep 6',time:'02:30 PM',utc:'2026-09-06T18:30:00Z'}
+  ]}
+];
+
+// ===== INDYCAR 2026 STANDINGS (Mock) =====
+const indycarDriverStandings = [
+  {pos:1,name:'Kyle Kirkwood',team:'Andretti Global',points:156,nat:'us'},
+  {pos:2,name:'Alex Palou',team:'Chip Ganassi Racing',points:154,nat:'es'},
+  {pos:3,name:'Christian Lundgaard',team:'Arrow McLaren',points:121,nat:'dk'},
+  {pos:4,name:'David Malukas',team:'Team Penske',points:116,nat:'us'},
+  {pos:5,name:'Josef Newgarden',team:'Team Penske',points:113,nat:'us'},
+  {pos:6,name:'Pato O\'Ward',team:'Arrow McLaren',points:106,nat:'mx'},
+  {pos:7,name:'Scott McLaughlin',team:'Team Penske',points:99,nat:'nz'},
+  {pos:8,name:'Marcus Ericsson',team:'Andretti Global',points:99,nat:'se'},
+  {pos:9,name:'Marcus Armstrong',team:'Meyer Shank Racing',points:98,nat:'nz'},
+  {pos:10,name:'Scott Dixon',team:'Chip Ganassi Racing',points:85,nat:'nz'},
+  {pos:11,name:'Alexander Rossi',team:'Ed Carpenter Racing',points:83,nat:'us'},
+  {pos:12,name:'Graham Rahal',team:'Rahal Letterman Lanigan',points:82,nat:'us'},
+  {pos:13,name:'Will Power',team:'Andretti Global',points:77,nat:'au'},
+  {pos:14,name:'Felix Rosenqvist',team:'Meyer Shank Racing',points:65,nat:'se'},
+  {pos:15,name:'Santino Ferrucci',team:'A.J. Foyt Enterprises',points:62,nat:'us'},
+  {pos:16,name:'Rinus VeeKay',team:'Juncos Hollinger Racing',points:62,nat:'nl'},
+  {pos:17,name:'Dennis Hauger',team:'Dale Coyne Racing',points:57,nat:'no'},
+  {pos:18,name:'Kyffin Simpson',team:'Chip Ganassi Racing',points:55,nat:'ky'},
+  {pos:19,name:'Romain Grosjean',team:'Dale Coyne Racing',points:51,nat:'fr'},
+  {pos:20,name:'Caio Collet',team:'A.J. Foyt Enterprises',points:51,nat:'br'},
+  {pos:21,name:'Louis Foster',team:'Rahal Letterman Lanigan',points:46,nat:'gb'},
+  {pos:22,name:'Christian Rasmussen',team:'Ed Carpenter Racing',points:44,nat:'dk'},
+  {pos:23,name:'Nolan Siegel',team:'Arrow McLaren',points:38,nat:'us'},
+  {pos:24,name:'Sting Ray Robb',team:'Juncos Hollinger Racing',points:35,nat:'us'},
+  {pos:25,name:'Mick Schumacher',team:'Rahal Letterman Lanigan',points:31,nat:'de'}
+];
+
+const indycarTeamStandings = [
+  {pos:1,name:'Honda',points:344,color:'#c00000',drivers:[]},
+  {pos:2,name:'Chevrolet',points:297,color:'#cca300',drivers:[]}
+];
+
+// ===== FORMULA E SEASON 12 (2025-26) CALENDAR =====
+// All times converted from IST (UTC+5:30) to UTC
+const feRaces = [
+  { round:1, name:'Mexico City ePrix', circuit:'Autódromo Hermanos Rodríguez', location:'Mexico City', country:'Mexico', flag:'🇲🇽', dateRange:'Jan 10-11', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 1',day:'Saturday',date:'Jan 10',time:'03:30 AM',utc:'2026-01-09T22:00:00Z'},
+    {name:'Free Practice 2',day:'Saturday',date:'Jan 10',time:'07:00 PM',utc:'2026-01-10T13:30:00Z'},
+    {name:'Qualifying',day:'Saturday',date:'Jan 10',time:'09:10 PM',utc:'2026-01-10T15:40:00Z'},
+    {name:'Race',day:'Sunday',date:'Jan 11',time:'01:35 AM',utc:'2026-01-10T20:05:00Z'}]},
+  { round:2, name:'Miami ePrix', circuit:'Homestead-Miami Speedway', location:'Miami', country:'USA', flag:'🇺🇸', dateRange:'Jan 31-Feb 1', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 1',day:'Saturday',date:'Jan 31',time:'03:30 AM',utc:'2026-01-30T22:00:00Z'},
+    {name:'Free Practice 2',day:'Saturday',date:'Jan 31',time:'06:00 PM',utc:'2026-01-31T12:30:00Z'},
+    {name:'Qualifying',day:'Saturday',date:'Jan 31',time:'08:10 PM',utc:'2026-01-31T14:40:00Z'},
+    {name:'Race',day:'Sunday',date:'Feb 1',time:'12:35 AM',utc:'2026-01-31T19:05:00Z'}]},
+  { round:3, name:'Jeddah ePrix I', circuit:'Jeddah Corniche Circuit', location:'Jeddah', country:'Saudi Arabia', flag:'🇸🇦', dateRange:'Feb 12-13', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 1',day:'Thursday',date:'Feb 12',time:'10:30 PM',utc:'2026-02-12T17:00:00Z'},
+    {name:'Free Practice 2',day:'Friday',date:'Feb 13',time:'04:00 PM',utc:'2026-02-13T10:30:00Z'},
+    {name:'Qualifying',day:'Friday',date:'Feb 13',time:'06:10 PM',utc:'2026-02-13T12:40:00Z'},
+    {name:'Race',day:'Friday',date:'Feb 13',time:'10:35 PM',utc:'2026-02-13T17:05:00Z'}]},
+  { round:4, name:'Jeddah ePrix II', circuit:'Jeddah Corniche Circuit', location:'Jeddah', country:'Saudi Arabia', flag:'🇸🇦', dateRange:'Feb 14', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 3',day:'Saturday',date:'Feb 14',time:'04:00 PM',utc:'2026-02-14T10:30:00Z'},
+    {name:'Qualifying',day:'Saturday',date:'Feb 14',time:'06:10 PM',utc:'2026-02-14T12:40:00Z'},
+    {name:'Race',day:'Saturday',date:'Feb 14',time:'10:35 PM',utc:'2026-02-14T17:05:00Z'}]},
+  { round:5, name:'Madrid ePrix', circuit:'IFEMA Madrid Circuit', location:'Madrid', country:'Spain', flag:'🇪🇸', dateRange:'Mar 20-21', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 1',day:'Friday',date:'Mar 20',time:'09:00 PM',utc:'2026-03-20T15:30:00Z'},
+    {name:'Free Practice 2',day:'Saturday',date:'Mar 21',time:'01:00 PM',utc:'2026-03-21T07:30:00Z'},
+    {name:'Qualifying',day:'Saturday',date:'Mar 21',time:'03:10 PM',utc:'2026-03-21T09:40:00Z'},
+    {name:'Race',day:'Saturday',date:'Mar 21',time:'07:35 PM',utc:'2026-03-21T14:05:00Z'}]},
+  { round:6, name:'Berlin ePrix I', circuit:'Tempelhof Airport Street Circuit', location:'Berlin', country:'Germany', flag:'🇩🇪', dateRange:'May 1-2', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 1',day:'Thursday',date:'May 1',time:'07:30 PM',utc:'2026-05-01T14:00:00Z'},
+    {name:'Free Practice 2',day:'Friday',date:'May 2',time:'01:00 PM',utc:'2026-05-02T07:30:00Z'},
+    {name:'Qualifying',day:'Friday',date:'May 2',time:'03:10 PM',utc:'2026-05-02T09:40:00Z'},
+    {name:'Race',day:'Friday',date:'May 2',time:'07:35 PM',utc:'2026-05-02T14:05:00Z'}]},
+  { round:7, name:'Berlin ePrix II', circuit:'Tempelhof Airport Street Circuit', location:'Berlin', country:'Germany', flag:'🇩🇪', dateRange:'May 3', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 3',day:'Saturday',date:'May 3',time:'01:00 PM',utc:'2026-05-03T07:30:00Z'},
+    {name:'Qualifying',day:'Saturday',date:'May 3',time:'03:10 PM',utc:'2026-05-03T09:40:00Z'},
+    {name:'Race',day:'Saturday',date:'May 3',time:'07:35 PM',utc:'2026-05-03T14:05:00Z'}]},
+  { round:8, name:'Monaco ePrix I', circuit:'Circuit de Monaco', location:'Monte Carlo', country:'Monaco', flag:'🇲🇨', dateRange:'May 16', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 1',day:'Saturday',date:'May 16',time:'11:00 AM',utc:'2026-05-16T05:30:00Z'},
+    {name:'Free Practice 2',day:'Saturday',date:'May 16',time:'12:40 PM',utc:'2026-05-16T07:10:00Z'},
+    {name:'Qualifying',day:'Saturday',date:'May 16',time:'02:10 PM',utc:'2026-05-16T08:40:00Z'},
+    {name:'Race',day:'Saturday',date:'May 16',time:'06:35 PM',utc:'2026-05-16T13:05:00Z'}]},
+  { round:9, name:'Monaco ePrix II', circuit:'Circuit de Monaco', location:'Monte Carlo', country:'Monaco', flag:'🇲🇨', dateRange:'May 17', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 3',day:'Sunday',date:'May 17',time:'12:00 PM',utc:'2026-05-17T06:30:00Z'},
+    {name:'Qualifying',day:'Sunday',date:'May 17',time:'02:10 PM',utc:'2026-05-17T08:40:00Z'},
+    {name:'Race',day:'Sunday',date:'May 17',time:'06:35 PM',utc:'2026-05-17T13:05:00Z'}]},
+  { round:10, name:'Sanya ePrix', circuit:'Hainan International Circuit', location:'Sanya', country:'China', flag:'🇨🇳', dateRange:'Jun 19-20', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 1',day:'Thursday',date:'Jun 19',time:'02:00 PM',utc:'2026-06-19T08:30:00Z'},
+    {name:'Free Practice 2',day:'Friday',date:'Jun 20',time:'06:00 AM',utc:'2026-06-20T00:30:00Z'},
+    {name:'Qualifying',day:'Friday',date:'Jun 20',time:'08:10 AM',utc:'2026-06-20T02:40:00Z'},
+    {name:'Race',day:'Friday',date:'Jun 20',time:'12:35 PM',utc:'2026-06-20T07:05:00Z'}]},
+  { round:11, name:'Shanghai ePrix I', circuit:'Shanghai International Circuit', location:'Shanghai', country:'China', flag:'🇨🇳', dateRange:'Jul 3-4', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 1',day:'Friday',date:'Jul 3',time:'01:30 PM',utc:'2026-07-03T08:00:00Z'},
+    {name:'Free Practice 2',day:'Saturday',date:'Jul 4',time:'06:00 AM',utc:'2026-07-04T00:30:00Z'},
+    {name:'Qualifying',day:'Saturday',date:'Jul 4',time:'08:10 AM',utc:'2026-07-04T02:40:00Z'},
+    {name:'Race',day:'Saturday',date:'Jul 4',time:'12:35 PM',utc:'2026-07-04T07:05:00Z'}]},
+  { round:12, name:'Shanghai ePrix II', circuit:'Shanghai International Circuit', location:'Shanghai', country:'China', flag:'🇨🇳', dateRange:'Jul 5', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 3',day:'Sunday',date:'Jul 5',time:'06:00 AM',utc:'2026-07-05T00:30:00Z'},
+    {name:'Qualifying',day:'Sunday',date:'Jul 5',time:'08:10 AM',utc:'2026-07-05T02:40:00Z'},
+    {name:'Race',day:'Sunday',date:'Jul 5',time:'12:35 PM',utc:'2026-07-05T07:05:00Z'}]},
+  { round:13, name:'Tokyo ePrix I', circuit:'Tokyo Street Circuit', location:'Tokyo', country:'Japan', flag:'🇯🇵', dateRange:'Jul 24-25', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 1',day:'Friday',date:'Jul 24',time:'04:30 PM',utc:'2026-07-24T11:00:00Z'},
+    {name:'Free Practice 2',day:'Saturday',date:'Jul 25',time:'10:00 AM',utc:'2026-07-25T04:30:00Z'},
+    {name:'Qualifying',day:'Saturday',date:'Jul 25',time:'12:10 PM',utc:'2026-07-25T06:40:00Z'},
+    {name:'Race',day:'Saturday',date:'Jul 25',time:'04:35 PM',utc:'2026-07-25T11:05:00Z'}]},
+  { round:14, name:'Tokyo ePrix II', circuit:'Tokyo Street Circuit', location:'Tokyo', country:'Japan', flag:'🇯🇵', dateRange:'Jul 26', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 3',day:'Sunday',date:'Jul 26',time:'10:00 AM',utc:'2026-07-26T04:30:00Z'},
+    {name:'Qualifying',day:'Sunday',date:'Jul 26',time:'12:10 PM',utc:'2026-07-26T06:40:00Z'},
+    {name:'Race',day:'Sunday',date:'Jul 26',time:'04:35 PM',utc:'2026-07-26T11:05:00Z'}]},
+  { round:15, name:'London ePrix I', circuit:'ExCeL London Circuit', location:'London', country:'Great Britain', flag:'🇬🇧', dateRange:'Aug 14-15', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 1',day:'Thursday',date:'Aug 14',time:'08:30 PM',utc:'2026-08-14T15:00:00Z'},
+    {name:'Free Practice 2',day:'Friday',date:'Aug 15',time:'01:00 PM',utc:'2026-08-15T07:30:00Z'},
+    {name:'Qualifying',day:'Friday',date:'Aug 15',time:'03:10 PM',utc:'2026-08-15T09:40:00Z'},
+    {name:'Race',day:'Friday',date:'Aug 15',time:'07:35 PM',utc:'2026-08-15T14:05:00Z'}]},
+  { round:16, name:'London ePrix II', circuit:'ExCeL London Circuit', location:'London', country:'Great Britain', flag:'🇬🇧', dateRange:'Aug 16', isSprint:false, podium:[], sessions:[
+    {name:'Free Practice 3',day:'Saturday',date:'Aug 16',time:'01:00 PM',utc:'2026-08-16T07:30:00Z'},
+    {name:'Qualifying',day:'Saturday',date:'Aug 16',time:'03:10 PM',utc:'2026-08-16T09:40:00Z'},
+    {name:'Race',day:'Saturday',date:'Aug 16',time:'07:35 PM',utc:'2026-08-16T14:05:00Z'}]}
+];
+
+// ===== FORMULA E SEASON 12 STANDINGS (After Round 6 — Madrid ePrix) =====
+// Data from official FIA Formula E standings
+const feDriverStandings = [
+  {pos:1,name:'Pascal Wehrlein',team:'Porsche Formula E Team',points:83,nat:'de'},
+  {pos:2,name:'Edoardo Mortara',team:'Mahindra Racing',points:72,nat:'ch'},
+  {pos:3,name:'Mitch Evans',team:'Jaguar TCS Racing',points:65,nat:'nz'},
+  {pos:4,name:'António Félix da Costa',team:'Jaguar TCS Racing',points:64,nat:'pt'},
+  {pos:5,name:'Nick Cassidy',team:'Citroën Racing',points:51,nat:'nz'},
+  {pos:6,name:'Nico Müller',team:'Porsche Formula E Team',points:50,nat:'ch'},
+  {pos:7,name:'Oliver Rowland',team:'Nissan Formula E Team',points:49,nat:'gb'},
+  {pos:8,name:'Jake Dennis',team:'Andretti Formula E',points:47,nat:'gb'},
+  {pos:9,name:'Sébastien Buemi',team:'Envision Racing',points:43,nat:'ch'},
+  {pos:10,name:'Dan Ticktum',team:'Cupra KIRO',points:22,nat:'gb'},
+  {pos:11,name:'Joel Eriksson',team:'Envision Racing',points:19,nat:'se'},
+  {pos:12,name:'Josep María Martí',team:'Cupra KIRO',points:19,nat:'es'},
+  {pos:13,name:'Taylor Barnard',team:'DS Penske',points:14,nat:'gb'},
+  {pos:14,name:'Nyck de Vries',team:'Mahindra Racing',points:12,nat:'nl'},
+  {pos:15,name:'Jean-Éric Vergne',team:'Citroën Racing',points:10,nat:'fr'},
+  {pos:16,name:'Maximilian Günther',team:'DS Penske',points:8,nat:'de'},
+  {pos:17,name:'Norman Nato',team:'Nissan Formula E Team',points:1,nat:'fr'},
+  {pos:18,name:'Zane Maloney',team:'Lola Yamaha ABT',points:1,nat:'bb'},
+  {pos:19,name:'Felipe Drugovich',team:'Andretti Formula E',points:0,nat:'br'},
+  {pos:20,name:'Lucas di Grassi',team:'Lola Yamaha ABT',points:0,nat:'br'}
+];
+const feTeamStandings = [
+  {pos:1,name:'Porsche Formula E Team',points:133,color:'#d4001a',drivers:['Pascal Wehrlein','Nico Müller']},
+  {pos:2,name:'Jaguar TCS Racing',points:129,color:'#006633',drivers:['Mitch Evans','António Félix da Costa']},
+  {pos:3,name:'Mahindra Racing',points:84,color:'#dd052b',drivers:['Edoardo Mortara','Nyck de Vries']},
+  {pos:4,name:'Envision Racing',points:62,color:'#00b140',drivers:['Sébastien Buemi','Joel Eriksson']},
+  {pos:5,name:'Citroën Racing',points:61,color:'#1a237e',drivers:['Nick Cassidy','Jean-Éric Vergne']},
+  {pos:6,name:'Nissan Formula E Team',points:50,color:'#c3002f',drivers:['Oliver Rowland','Norman Nato']},
+  {pos:7,name:'Andretti Formula E',points:47,color:'#cc0000',drivers:['Jake Dennis','Felipe Drugovich']},
+  {pos:8,name:'Cupra KIRO',points:41,color:'#333333',drivers:['Dan Ticktum','Josep María Martí']},
+  {pos:9,name:'DS Penske',points:22,color:'#c6a962',drivers:['Taylor Barnard','Maximilian Günther']},
+  {pos:10,name:'Lola Yamaha ABT',points:1,color:'#0055a4',drivers:['Zane Maloney','Lucas di Grassi']}
+];
+const feManufacturerStandings = [
+  {pos:1,name:'Porsche',points:170,color:'#d4001a'},
+  {pos:2,name:'Jaguar',points:167,color:'#006633'},
+  {pos:3,name:'Stellantis',points:93,color:'#1a237e'},
+  {pos:4,name:'Mahindra',points:80,color:'#dd052b'},
+  {pos:5,name:'Nissan',points:73,color:'#c3002f'},
+  {pos:6,name:'Lola',points:22,color:'#0055a4'}
+];

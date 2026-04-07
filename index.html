@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>F1MOTO — F1 & MotoGP 2026</title>
-    <meta name="description" content="F1 and MotoGP 2026 Season Calendar, Session Times, and Championship Standings">
+    <title>RACESTAND — F1, MotoGP, IndyCar & Formula E 2026</title>
+    <meta name="description" content="F1, MotoGP, IndyCar & Formula E 2026 Season Calendar, Session Times, and Championship Standings">
     <meta name="theme-color" content="#08080f">
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
@@ -18,8 +18,8 @@
     <div id="landing-view" class="view active">
         <div class="landing-container">
             <div class="landing-bg-decoration"></div>
-            <h1 class="app-title">F1<span class="highlight">MOTO</span></h1>
-            <p class="app-subtitle">2026 Season · Calendar & Standings</p>
+            <h1 class="app-title">RACESTAND</h1>
+            <p class="app-subtitle">2026</p>
             <div class="series-cards">
                 <div class="series-card f1-card" onclick="app.selectSeries('f1', event)" id="f1-select-btn">
                     <div class="card-glow f1-glow"></div>
@@ -50,6 +50,38 @@
                         </div>
                         <div class="rollout-btn" onclick="app.startSeries('motogp', 'standings', event)">
                             <span class="btn-icon">🏆</span> STANDINGS
+                        </div>
+                    </div>
+                </div>
+                <div class="series-card indycar-card" onclick="app.selectSeries('indycar', event)" id="indycar-select-btn">
+                    <div class="card-glow indycar-glow"></div>
+                    <div class="card-content centered-content">
+                        <div class="series-logo">
+                            <img src="resources/indycarlogo.png" alt="IndyCar" class="logo-img indycar-logo-img">
+                        </div>
+                    </div>
+                    <div class="rollout-options">
+                        <div class="rollout-btn" onclick="app.startSeries('indycar', 'races', event)">
+                            <span class="btn-icon">🏁</span> RACES
+                        </div>
+                        <div class="rollout-btn" onclick="app.startSeries('indycar', 'standings', event)">
+                            <span class="btn-icon">🏆</span> STANDINGS
+                        </div>
+                    </div>
+                </div>
+                <div class="series-card fe-card" onclick="app.selectSeries('fe', event)" id="fe-select-btn">
+                    <div class="card-glow fe-glow"></div>
+                    <div class="card-content centered-content">
+                        <div class="series-logo">
+                            <img src="resources/formulaelogo.jpg" alt="Formula E" class="logo-img fe-logo-img">
+                        </div>
+                    </div>
+                    <div class="rollout-options">
+                        <div class="rollout-btn" onclick="app.startSeries('fe', 'races', event)">
+                            <span class="btn-icon">🏁</span> RACES
+                        </div>
+                        <div class="rollout-btn" onclick="app.startSeries('fe', 'standings', event)">
+                            <span class="btn-icon">⚡</span> STANDINGS
                         </div>
                     </div>
                 </div>
@@ -147,7 +179,7 @@
                         <div class="digit-block"><span class="digit-value" id="f1-secs">--</span><span class="digit-label">Seconds</span></div>
                     </div>
                 </div>
-                <div class="timer-info-row">
+                <div class="timer-info-row" onclick="app.toggleTimerTimingMode()" style="cursor:pointer">
                     <div class="timer-location">
                         <span class="timer-location-name" id="f1-location">--</span>
                         <span class="timer-circuit" id="f1-circuit">--</span>
@@ -175,7 +207,7 @@
                         <div class="digit-block"><span class="digit-value" id="motogp-secs">--</span><span class="digit-label">Seconds</span></div>
                     </div>
                 </div>
-                <div class="timer-info-row">
+                <div class="timer-info-row" onclick="app.toggleTimerTimingMode()" style="cursor:pointer">
                     <div class="timer-location">
                         <span class="timer-location-name" id="motogp-location">--</span>
                         <span class="timer-circuit" id="motogp-circuit">--</span>
@@ -184,6 +216,62 @@
                         <span class="session-type" id="motogp-session-type">--</span>
                         <span class="session-date" id="motogp-session-date">--</span>
                         <span class="session-time-val" id="motogp-session-time">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="countdown-timer indycar-timer" id="indycar-countdown-timer">
+            <div class="timer-bg-image indycar-timer-bg"></div>
+            <div class="timer-overlay"></div>
+            <div class="timer-content">
+                <div class="timer-header-row">
+                    <div class="timer-series-badge indycar-badge">
+                        <img src="resources/indycarlogo.png" alt="IndyCar" class="timer-logo indycar-timer-logo">
+                    </div>
+                    <div class="timer-digits" id="indycar-timer-digits">
+                        <div class="digit-block"><span class="digit-value" id="indycar-days">--</span><span class="digit-label">Days</span></div>
+                        <div class="digit-block"><span class="digit-value" id="indycar-hours">--</span><span class="digit-label">Hours</span></div>
+                        <div class="digit-block"><span class="digit-value" id="indycar-mins">--</span><span class="digit-label">Minutes</span></div>
+                        <div class="digit-block"><span class="digit-value" id="indycar-secs">--</span><span class="digit-label">Seconds</span></div>
+                    </div>
+                </div>
+                <div class="timer-info-row" onclick="app.toggleTimerTimingMode()" style="cursor:pointer">
+                    <div class="timer-location">
+                        <span class="timer-location-name" id="indycar-location">--</span>
+                        <span class="timer-circuit" id="indycar-circuit">--</span>
+                    </div>
+                    <div class="timer-session-pill" id="indycar-session-pill">
+                        <span class="session-type" id="indycar-session-type">--</span>
+                        <span class="session-date" id="indycar-session-date">--</span>
+                        <span class="session-time-val" id="indycar-session-time">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="countdown-timer fe-timer" id="fe-countdown-timer">
+            <div class="timer-bg-image fe-timer-bg"></div>
+            <div class="timer-overlay"></div>
+            <div class="timer-content">
+                <div class="timer-header-row">
+                    <div class="timer-series-badge fe-badge">
+                        <img src="resources/formulaelogo.jpg" alt="Formula E" class="timer-logo fe-timer-logo">
+                    </div>
+                    <div class="timer-digits" id="fe-timer-digits">
+                        <div class="digit-block"><span class="digit-value" id="fe-days">--</span><span class="digit-label">Days</span></div>
+                        <div class="digit-block"><span class="digit-value" id="fe-hours">--</span><span class="digit-label">Hours</span></div>
+                        <div class="digit-block"><span class="digit-value" id="fe-mins">--</span><span class="digit-label">Minutes</span></div>
+                        <div class="digit-block"><span class="digit-value" id="fe-secs">--</span><span class="digit-label">Seconds</span></div>
+                    </div>
+                </div>
+                <div class="timer-info-row" onclick="app.toggleTimerTimingMode()" style="cursor:pointer">
+                    <div class="timer-location">
+                        <span class="timer-location-name" id="fe-location">--</span>
+                        <span class="timer-circuit" id="fe-circuit">--</span>
+                    </div>
+                    <div class="timer-session-pill" id="fe-session-pill">
+                        <span class="session-type" id="fe-session-type">--</span>
+                        <span class="session-date" id="fe-session-date">--</span>
+                        <span class="session-time-val" id="fe-session-time">--</span>
                     </div>
                 </div>
             </div>
