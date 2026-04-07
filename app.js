@@ -6,7 +6,7 @@ const countryToCode = {
   'Italy': 'it', 'Azerbaijan': 'az', 'Singapore': 'sg', 'Mexico': 'mx', 'Brazil': 'br',
   'Qatar': 'qa', 'UAE': 'ae', 'Thailand': 'th', 'Argentina': 'ar', 'France': 'fr',
   'Germany': 'de', 'Czech Republic': 'cz', 'Indonesia': 'id', 'Malaysia': 'my',
-  'Portugal': 'pt', 'South Africa': 'za'
+  'Portugal': 'pt', 'South Africa': 'za', 'Mexico': 'mx'
 };
 
 // ===== // ===== CIRCUIT LAYOUT IMAGE URLs (from julesr0y/f1-circuits-svg) =====
@@ -62,6 +62,7 @@ const app = {
   history: [],
   currentF1Season: '2026', // Specifically targeting 2026 as per user requirement
   timingMode: 'local', // 'local' or 'track'
+  timerTimingMode: 'local',
   currentRound: null,
   calendarScrollPos: 0,
 
@@ -72,7 +73,8 @@ const app = {
     'Madrid': 2, 'Baku': 4, 'Singapore': 8, 'Austin': -5, 'Mexico City': -6,
     'Interlagos': -3, 'Las Vegas': -7, 'Lusail': 3, 'Abu Dhabi': 4,
     'Buriram': 7, 'Termas': -3, 'Jerez': 2, 'Le Mans': 2, 'Mugello': 2,
-    'Sachsenring': 2, 'Assen': 2, 'Kolkata': 5.5, 'Phillip Island': 11, 'Lombok': 8, 'Sepang': 8, 'Portimão': 1, 'Valencia': 1
+    'Sachsenring': 2, 'Assen': 2, 'Kolkata': 5.5, 'Phillip Island': 11, 'Lombok': 8, 'Sepang': 8, 'Portimão': 1, 'Valencia': 1,
+    'Sanya': 8, 'Tokyo': 9, 'London': 1, 'Berlin': 2
   },
 
   sanitizeDriverName(name) {
@@ -143,9 +145,9 @@ const app = {
     if (target === 'races' && activeView === 'calendar-view') return;
     if (target === 'standings' && activeView === 'standings-view') return;
 
-    // Skip history pushing when switching laterally via the menu
-    if (target === 'races') this.showRaces(true);
-    else if (target === 'standings') this.showStandings(true);
+    // Do not skip history pushing, user expects back button to go to previous view
+    if (target === 'races') this.showRaces(false);
+    else if (target === 'standings') this.showStandings(false);
   },
 
   init() {
@@ -220,9 +222,16 @@ const app = {
   // Helper to update logos in both headers
   updateHeaderLogos() {
     const series = this.currentSeries;
-    const logoHtml = series === 'f1'
-      ? `<img src="resources/f1logo.png" alt="F1" class="header-logo">`
-      : `<img src="resources/motogplogo.png" alt="MotoGP" class="header-logo" style="filter: brightness(0) invert(1)">`;
+    let logoHtml = '';
+    if (series === 'f1') {
+      logoHtml = `<img src="resources/f1logo.png" alt="F1" class="header-logo">`;
+    } else if (series === 'motogp') {
+      logoHtml = `<img src="resources/motogplogo.png" alt="MotoGP" class="header-logo" style="filter: brightness(0) invert(1)">`;
+    } else if (series === 'indycar') {
+      logoHtml = `<img src="resources/indycarlogo.png" alt="IndyCar" class="header-logo">`;
+    } else if (series === 'fe') {
+      logoHtml = `<img src="resources/formulaelogo.jpg" alt="Formula E" class="header-logo" style="border-radius:6px">`;
+    }
 
     const calLogo = document.getElementById('cal-header-logo');
     const stdLogo = document.getElementById('standings-header-logo');
@@ -235,7 +244,7 @@ const app = {
   resetSeriesSelection() {
     const container = document.querySelector('.series-cards');
     if (container) {
-      container.classList.remove('f1-selected', 'motogp-selected');
+      container.classList.remove('f1-selected', 'motogp-selected', 'indycar-selected', 'fe-selected');
     }
     document.querySelectorAll('.series-card').forEach(c => c.classList.remove('active'));
   },
@@ -245,13 +254,14 @@ const app = {
     if (e) e.stopPropagation();
     const container = document.querySelector('.series-cards');
     const cards = document.querySelectorAll('.series-card');
-    const isAlreadyActive = cards[series === 'f1' ? 0 : 1].classList.contains('active');
+    const idx = series === 'f1' ? 0 : (series === 'motogp' ? 1 : (series === 'indycar' ? 2 : 3));
+    const isAlreadyActive = cards[idx] ? cards[idx].classList.contains('active') : false;
 
     this.resetSeriesSelection();
 
-    if (!isAlreadyActive) {
+    if (!isAlreadyActive && cards[idx]) {
       container.classList.add(`${series}-selected`);
-      cards[series === 'f1' ? 0 : 1].classList.add('active');
+      cards[idx].classList.add('active');
       this.setAccentColor(series);
     }
   },
@@ -282,7 +292,7 @@ const app = {
     // Update labels
     // Update all session times and dates without full re-render to avoid flicker
     const tz = this.getTimezoneAbbr();
-    const race = (this.currentSeries === 'f1' ? f1Races : motogpRaces).find(r => r.round === this.currentRound);
+    const race = (this.currentSeries === 'f1' ? f1Races : (this.currentSeries === 'motogp' ? motogpRaces : (this.currentSeries === 'fe' ? feRaces : indycarRaces))).find(r => r.round === this.currentRound);
     if (!race) return;
 
     document.querySelectorAll('.session-item').forEach(el => {
@@ -334,9 +344,15 @@ const app = {
     if (series === 'f1') {
       root.style.setProperty('--accent', 'var(--f1-red)');
       root.style.setProperty('--accent-glow', 'var(--f1-red-glow)');
-    } else {
+    } else if (series === 'motogp') {
       root.style.setProperty('--accent', 'var(--motogp-orange)');
       root.style.setProperty('--accent-glow', 'var(--motogp-orange-glow)');
+    } else if (series === 'indycar') {
+      root.style.setProperty('--accent', 'var(--indycar-blue)');
+      root.style.setProperty('--accent-glow', 'var(--indycar-blue-glow)');
+    } else if (series === 'fe') {
+      root.style.setProperty('--accent', 'var(--fe-cyan)');
+      root.style.setProperty('--accent-glow', 'var(--fe-cyan-glow)');
     }
   },
 
@@ -347,13 +363,19 @@ const app = {
     const startParts = parts[0].trim().split(' ');
     const startMonth = startParts[0];
     let endMonth = startMonth, endDay;
-    const endStr = parts[1].trim();
-    if (endStr.includes(' ')) {
-      const ep = endStr.split(' ');
-      endMonth = ep[0]; endDay = parseInt(ep[1]);
+    
+    if (parts.length > 1) {
+      const endStr = parts[1].trim();
+      if (endStr.includes(' ')) {
+        const ep = endStr.split(' ');
+        endMonth = ep[0]; endDay = parseInt(ep[1]);
+      } else {
+        endDay = parseInt(endStr);
+      }
     } else {
-      endDay = parseInt(endStr);
+      endDay = parseInt(startParts[1]);
     }
+    
     return new Date(2026, months[endMonth], endDay, 23, 59);
   },
   getRaceStartDate(dateRange) {
@@ -462,8 +484,8 @@ const app = {
       if (!skipHistory) {
         this.pushToHistory('calendar-view');
       }
-      const races = this.currentSeries === 'f1' ? f1Races : motogpRaces;
-      const title = this.currentSeries === 'f1' ? '2026 RACES' : '2026 RACES';
+      const races = this.currentSeries === 'f1' ? f1Races : (this.currentSeries === 'motogp' ? motogpRaces : (this.currentSeries === 'fe' ? feRaces : indycarRaces));
+      const title = '2026 RACES';
       document.getElementById('calendar-title').textContent = title;
       this.renderRaceGrid(races);
       this.showView('calendar-view');
@@ -475,8 +497,8 @@ const app = {
 
   renderRaceGrid(races) {
     const grid = document.getElementById('race-grid');
-    const accentColor = this.currentSeries === 'f1' ? '#e10600' : '#ff6a00';
-    const gradient = this.currentSeries === 'f1' ? 'var(--f1-gradient)' : 'var(--motogp-gradient)';
+    const accentColor = this.currentSeries === 'f1' ? '#e10600' : (this.currentSeries === 'motogp' ? '#ff6a00' : (this.currentSeries === 'fe' ? '#00D0FD' : '#C4A035'));
+    const gradient = this.currentSeries === 'f1' ? 'var(--f1-gradient)' : (this.currentSeries === 'motogp' ? 'var(--motogp-gradient)' : (this.currentSeries === 'fe' ? 'var(--fe-gradient)' : 'var(--indycar-gradient)'));
     const nextRound = this.getNextRound(races);
 
     grid.innerHTML = races.map((race, i) => {
@@ -529,14 +551,14 @@ const app = {
       this.pushToHistory('race-detail-view', { round });
     }
     this.currentRound = round;
-    const races = this.currentSeries === 'f1' ? f1Races : motogpRaces;
+    const races = this.currentSeries === 'f1' ? f1Races : (this.currentSeries === 'motogp' ? motogpRaces : (this.currentSeries === 'fe' ? feRaces : indycarRaces));
     const race = races.find(r => r.round === round);
     if (!race) return;
 
     // document.getElementById('detail-title').textContent = race.name.toUpperCase();
     this.updateHeaderLogos();
-    const glowColor = this.currentSeries === 'f1' ? 'var(--f1-red)' : 'var(--motogp-orange)';
-    const accentColor = this.currentSeries === 'f1' ? '#e10600' : '#ff6a00';
+    const glowColor = this.currentSeries === 'f1' ? 'var(--f1-red)' : (this.currentSeries === 'motogp' ? 'var(--motogp-orange)' : (this.currentSeries === 'fe' ? 'var(--fe-cyan)' : 'var(--indycar-blue)'));
+    const accentColor = this.currentSeries === 'f1' ? '#e10600' : (this.currentSeries === 'motogp' ? '#ff6a00' : (this.currentSeries === 'fe' ? '#00D0FD' : '#C4A035'));
     const badgeClass = this.currentSeries === 'f1' ? 'f1-sprint-badge' : 'motogp-sprint-badge';
 
     // Remove day groups logic as per user request to flatten layout
@@ -587,19 +609,27 @@ const app = {
       const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-      let dayName, monthName, dayNum;
-      if (this.timingMode === 'local') {
-        dayName = weekDays[d.getDay()];
-        monthName = months[d.getMonth()];
-        dayNum = d.getDate();
+      const isValidDate = s.utc && !isNaN(d.getTime());
+      
+      let formattedDate;
+      if (!isValidDate) {
+        formattedDate = 'TBD';
       } else {
-        const offset = this.trackOffsets[race.location] || 0;
-        const trackDate = new Date(d.getTime() + (offset * 60 * 60 * 1000));
-        dayName = weekDays[trackDate.getUTCDay()];
-        monthName = months[trackDate.getUTCMonth()];
-        dayNum = trackDate.getUTCDate();
+        let dayName, monthName, dayNum;
+        if (this.timingMode === 'local') {
+          dayName = weekDays[d.getDay()];
+          monthName = months[d.getMonth()];
+          dayNum = d.getDate();
+        } else {
+          const offset = this.trackOffsets[race.location] || 0;
+          const trackDate = new Date(d.getTime() + (offset * 60 * 60 * 1000));
+          dayName = weekDays[trackDate.getUTCDay()];
+          monthName = months[trackDate.getUTCMonth()];
+          dayNum = trackDate.getUTCDate();
+        }
+        formattedDate = `${dayName}, ${monthName} ${dayNum}`;
       }
-      const formattedDate = `${dayName}, ${monthName} ${dayNum}`;
+
       const nameLower = s.name.toLowerCase();
       const isRace = nameLower.includes('race') && !nameLower.includes('sprint');
       const isQuali = nameLower.includes('qualif');
@@ -612,17 +642,9 @@ const app = {
       else if (isSprint) dotColor = '#ff44ff';
       else if (isPractice) dotColor = '#3498db';
 
-      // Check if this individual session has already happened
-      // months mapping moved to outer loop scope
-      const dateParts = s.date.split(' ');
-      const sMonth = months[dateParts[0]];
-      const sDay = parseInt(dateParts[1]);
-      let sHour = 0, sMin = 0;
-      // No AM/PM parsing needed anymore since we use UTC methods
-
       // Check if this individual session has already happened using UTC
       // Updated logic: Qualy/Sprint results appear after 1 hour, Race after 2 hours
-      const sessionDate = s.utc ? new Date(s.utc) : null;
+      const sessionDate = isValidDate ? new Date(s.utc) : null;
       const bufferMs = (isQuali || isSprint) ? 60 * 60 * 1000 : 2 * 60 * 60 * 1000;
       const sessionEnd = sessionDate ? new Date(sessionDate.getTime() + bufferMs) : null;
       const sessionHappened = sessionEnd ? new Date() > sessionEnd : false;
@@ -642,10 +664,16 @@ const app = {
         }
       }
 
-      const localTime = this.formatLocalTime(s.utc);
-      const tz = this.getTimezoneAbbr();
-
-      const displayTime = this.timingMode === 'local' ? localTime : this.getTrackTime(s.utc, race.location);
+      let localTime, tz, displayTime, suffixDisplay;
+      if (!isValidDate) {
+        displayTime = 'TBD';
+        suffixDisplay = '';
+      } else {
+        localTime = this.formatLocalTime(s.utc);
+        tz = this.getTimezoneAbbr();
+        displayTime = this.timingMode === 'local' ? localTime : this.getTrackTime(s.utc, race.location);
+        suffixDisplay = this.timingMode === 'local' ? tz : 'TRACK';
+      }
 
       html += `
           <div class="session-item" data-utc="${s.utc}">
@@ -656,7 +684,7 @@ const app = {
                 <div class="session-card-info">${formattedDate}</div>
                 <div class="session-time">
                     <span class="time-val">${displayTime}</span> 
-                    <span class="time-label-suffix">${this.timingMode === 'local' ? tz : 'TRACK'}</span>
+                    <span class="time-label-suffix">${suffixDisplay}</span>
                 </div>
               </div>
             </div>
@@ -694,11 +722,24 @@ const app = {
         { id: 'teams', label: 'Constructors' },
         { id: 'master-teams', label: 'Master Const.' }
       ];
-    } else {
+    } else if (this.currentSeries === 'motogp') {
       tabs = [
         { id: 'riders', label: 'Riders' },
         { id: 'teams', label: 'Teams' },
         { id: 'constructors', label: 'Constructors' }
+      ];
+    } else if (this.currentSeries === 'indycar') {
+      tabs = [
+        { id: 'drivers', label: 'Drivers' },
+        { id: 'teams', label: 'Teams' }
+      ];
+    } else if (this.currentSeries === 'fe') {
+      tabs = [
+        { id: 'drivers', label: 'Drivers' },
+        { id: 'master-drivers', label: 'Master Drivers' },
+        { id: 'teams', label: 'Teams' },
+        { id: 'manufacturers', label: 'Manufacturers' },
+        { id: 'master-manufacturers', label: 'Master Mfrs' }
       ];
     }
     tabsEl.innerHTML = tabs.map((t, i) =>
@@ -748,7 +789,7 @@ const app = {
       else if (tabId === 'master-drivers') { data = this.liveF1DriverStandings || f1DriverStandings; isMaster = true; masterType = 'driver'; }
       else if (tabId === 'master-teams') { data = this.liveF1TeamStandings || f1TeamStandings; isMaster = true; isTeam = true; masterType = 'team'; }
       else { data = this.liveF1TeamStandings || f1TeamStandings; isTeam = true; }
-    } else {
+    } else if (this.currentSeries === 'motogp') {
       // ChatGPT logic for MotoGP tabs
       if (tabId === 'riders') {
         data = this.liveMotoGPRiderStandings || motogpRiderStandings;
@@ -763,13 +804,39 @@ const app = {
         data = this.liveMotoGPConstructorStandings || motogpConstructorStandings;
         isTeam = true;
       }
+    } else if (this.currentSeries === 'indycar') {
+      if (tabId === 'drivers') {
+        data = indycarDriverStandings;
+      } else if (tabId === 'teams') {
+        data = indycarTeamStandings;
+        isTeam = true;
+      }
+    } else if (this.currentSeries === 'fe') {
+      if (tabId === 'drivers') {
+        data = feDriverStandings;
+      } else if (tabId === 'master-drivers') {
+        data = feDriverStandings;
+        isMaster = true;
+        masterType = 'driver';
+      } else if (tabId === 'teams') {
+        data = feTeamStandings;
+        isTeam = true;
+      } else if (tabId === 'manufacturers') {
+        data = feManufacturerStandings;
+        isTeam = true;
+      } else if (tabId === 'master-manufacturers') {
+        data = feManufacturerStandings;
+        isMaster = true;
+        isTeam = true;
+        masterType = 'team';
+      }
     }
     const maxPts = Math.max(1, ...(data.map(d => d.points)));
-    const accentColor = this.currentSeries === 'f1' ? '#e10600' : '#ff6a00';
+    const accentColor = this.currentSeries === 'f1' ? '#e10600' : (this.currentSeries === 'motogp' ? '#ff6a00' : (this.currentSeries === 'fe' ? '#00D0FD' : '#C4A035'));
 
     if (isMaster) {
       // ===== MASTER MATRIX STANDINGS =====
-      const allSeriesRaces = this.currentSeries === 'f1' ? f1Races : motogpRaces;
+      const allSeriesRaces = this.currentSeries === 'f1' ? f1Races : (this.currentSeries === 'motogp' ? motogpRaces : (this.currentSeries === 'fe' ? feRaces : indycarRaces));
       const racesCompleted = allSeriesRaces.filter(r => (r.podium && r.podium.length > 0) || r.isCancelled).length;
       const activeRaces = allSeriesRaces; // Render full season grid but with completed data
 
@@ -1593,9 +1660,16 @@ const app = {
     if (btn) btn.classList.toggle('flipped', this.countdownBarCollapsed);
   },
 
+  toggleTimerTimingMode() {
+    this.timerTimingMode = this.timerTimingMode === 'local' ? 'track' : 'local';
+    this.updateCountdownTimers();
+  },
+
   updateTimerVisibility() {
     const f1Timer = document.getElementById('f1-countdown-timer');
     const mgTimer = document.getElementById('motogp-countdown-timer');
+    const inTimer = document.getElementById('indycar-countdown-timer');
+    const feTimer = document.getElementById('fe-countdown-timer');
     const bar = document.getElementById('countdown-bar');
     const btn = document.getElementById('countdown-toggle-btn');
     if (!f1Timer || !mgTimer || !bar) return;
@@ -1607,13 +1681,15 @@ const app = {
     } else {
       bar.style.display = '';
       if (btn) btn.style.display = '';
-      if (this.currentSeries === 'f1') {
-        f1Timer.classList.remove('hidden-timer');
-        mgTimer.classList.add('hidden-timer');
-      } else {
-        f1Timer.classList.add('hidden-timer');
-        mgTimer.classList.remove('hidden-timer');
-      }
+      if (inTimer) inTimer.classList.add('hidden-timer');
+      if (feTimer) feTimer.classList.add('hidden-timer');
+      f1Timer.classList.add('hidden-timer');
+      mgTimer.classList.add('hidden-timer');
+
+      if (this.currentSeries === 'f1') f1Timer.classList.remove('hidden-timer');
+      else if (this.currentSeries === 'motogp') mgTimer.classList.remove('hidden-timer');
+      else if (this.currentSeries === 'indycar' && inTimer) inTimer.classList.remove('hidden-timer');
+      else if (this.currentSeries === 'fe' && feTimer) feTimer.classList.remove('hidden-timer');
     }
   },
 
@@ -1672,7 +1748,20 @@ const app = {
       document.getElementById('f1-session-type').textContent = f1Next.session.name + ' ';
       const f1Date = document.getElementById('f1-session-date');
       if (f1Date) f1Date.style.display = 'none';
-      document.getElementById('f1-session-time').textContent = `${this.formatCountdownDate(f1Next.sessionDate)} ${this.formatCountdownTime(f1Next.sessionDate)}`;
+      let f1DateStr = "", f1TimeStr = "";
+      if (this.timerTimingMode === 'track') {
+        const offset = this.trackOffsets[f1Next.race.location] || 0;
+        const trackDate = new Date(f1Next.sessionDate.getTime() + (offset * 60 * 60 * 1000));
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        f1DateStr = `${months[trackDate.getUTCMonth()]} ${trackDate.getUTCDate()}`;
+        const h = String(trackDate.getUTCHours()).padStart(2, '0');
+        const m = String(trackDate.getUTCMinutes()).padStart(2, '0');
+        f1TimeStr = `${h}:${m} TT`;
+      } else {
+        f1DateStr = this.formatCountdownDate(f1Next.sessionDate);
+        f1TimeStr = this.formatCountdownTime(f1Next.sessionDate);
+      }
+      document.getElementById('f1-session-time').textContent = `${f1DateStr}, ${f1TimeStr}`;
     }
 
     // MotoGP countdown
@@ -1693,8 +1782,93 @@ const app = {
       document.getElementById('motogp-session-type').textContent = mgNext.session.name + ' ';
       const mgDate = document.getElementById('motogp-session-date');
       if (mgDate) mgDate.style.display = 'none';
-      document.getElementById('motogp-session-time').textContent = `${this.formatCountdownDate(mgNext.sessionDate)} ${this.formatCountdownTime(mgNext.sessionDate)}`;
+
+      let mgDateStr = "", mgTimeStr = "";
+      if (this.timerTimingMode === 'track') {
+        const offset = this.trackOffsets[mgNext.race.location] || 0;
+        const trackDate = new Date(mgNext.sessionDate.getTime() + (offset * 60 * 60 * 1000));
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        mgDateStr = `${months[trackDate.getUTCMonth()]} ${trackDate.getUTCDate()}`;
+        const h = String(trackDate.getUTCHours()).padStart(2, '0');
+        const m = String(trackDate.getUTCMinutes()).padStart(2, '0');
+        mgTimeStr = `${h}:${m} TT`;
+      } else {
+        mgDateStr = this.formatCountdownDate(mgNext.sessionDate);
+        mgTimeStr = this.formatCountdownTime(mgNext.sessionDate);
+      }
+      document.getElementById('motogp-session-time').textContent = `${mgDateStr}, ${mgTimeStr}`;
     }
+
+    // IndyCar countdown
+    const inNext = typeof indycarRaces !== 'undefined' ? this.findNextSession(indycarRaces) : null;
+    if (inNext) {
+      const diff = inNext.sessionDate - now;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('indycar-days').textContent = String(days).padStart(2, '0');
+      document.getElementById('indycar-hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('indycar-mins').textContent = String(mins).padStart(2, '0');
+      document.getElementById('indycar-secs').textContent = String(secs).padStart(2, '0');
+      document.getElementById('indycar-location').textContent = inNext.race.location;
+      document.getElementById('indycar-circuit').textContent = inNext.race.circuit;
+      document.getElementById('indycar-session-type').textContent = inNext.session.name + ' ';
+      const inDate = document.getElementById('indycar-session-date');
+      if (inDate) inDate.style.display = 'none';
+
+      let inDateStr = "", inTimeStr = "";
+      if (this.timerTimingMode === 'track') {
+        const offset = this.trackOffsets[inNext.race.location] || 0;
+        const trackDate = new Date(inNext.sessionDate.getTime() + (offset * 60 * 60 * 1000));
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        inDateStr = `${months[trackDate.getUTCMonth()]} ${trackDate.getUTCDate()}`;
+        const h = String(trackDate.getUTCHours()).padStart(2, '0');
+        const m = String(trackDate.getUTCMinutes()).padStart(2, '0');
+        inTimeStr = `${h}:${m} TT`;
+      } else {
+        inDateStr = this.formatCountdownDate(inNext.sessionDate);
+        inTimeStr = this.formatCountdownTime(inNext.sessionDate);
+      }
+      document.getElementById('indycar-session-time').textContent = `${inDateStr}, ${inTimeStr}`;
+    }
+
+    // Formula E countdown
+    const feNext = typeof feRaces !== 'undefined' ? this.findNextSession(feRaces) : null;
+    if (feNext) {
+      const diff = feNext.sessionDate - now;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('fe-days').textContent = String(days).padStart(2, '0');
+      document.getElementById('fe-hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('fe-mins').textContent = String(mins).padStart(2, '0');
+      document.getElementById('fe-secs').textContent = String(secs).padStart(2, '0');
+      document.getElementById('fe-location').textContent = feNext.race.location;
+      document.getElementById('fe-circuit').textContent = feNext.race.circuit;
+      document.getElementById('fe-session-type').textContent = feNext.session.name + ' ';
+      const feDate = document.getElementById('fe-session-date');
+      if (feDate) feDate.style.display = 'none';
+
+      let feDateStr = "", feTimeStr = "";
+      if (this.timerTimingMode === 'track') {
+        const offset = this.trackOffsets[feNext.race.location] || 0;
+        const trackDate = new Date(feNext.sessionDate.getTime() + (offset * 60 * 60 * 1000));
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        feDateStr = `${months[trackDate.getUTCMonth()]} ${trackDate.getUTCDate()}`;
+        const h = String(trackDate.getUTCHours()).padStart(2, '0');
+        const m = String(trackDate.getUTCMinutes()).padStart(2, '0');
+        feTimeStr = `${h}:${m} TT`;
+      } else {
+        feDateStr = this.formatCountdownDate(feNext.sessionDate);
+        feTimeStr = this.formatCountdownTime(feNext.sessionDate);
+      }
+      document.getElementById('fe-session-time').textContent = `${feDateStr}, ${feTimeStr}`;
+    }
+
 
     // Update visibility based on current context
     this.updateTimerVisibility();
